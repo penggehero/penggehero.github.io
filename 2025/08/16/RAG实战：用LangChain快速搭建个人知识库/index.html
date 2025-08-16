@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"penggehero.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9256612801953386"
+     crossorigin="anonymous"></script>
+
+  <meta name="description" content="RAG实战：用LangChain快速搭建个人知识库前言本人在物联网（IoT）相关领域工作一年多，最近一直在看大模型和MQTT相关的知识。相比于枯燥的理论学习，我更信奉**“Learning by Doing”**，所以我想利用时下大火RAG技术搭建一个MQTT协议的个人知识库，下面将详细记录从环境搭建到应用上线的每一步，展示一个完整RAG项目的实现细节。 背景知识RAG 简介RAG（Retriev">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RAG实战：用LangChain快速搭建个人知识库">
+<meta property="og:url" content="https://penggehero.github.io/2025/08/16/RAG%E5%AE%9E%E6%88%98%EF%BC%9A%E7%94%A8LangChain%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%9F%A5%E8%AF%86%E5%BA%93/index.html">
+<meta property="og:site_name" content="云泽的博客">
+<meta property="og:description" content="RAG实战：用LangChain快速搭建个人知识库前言本人在物联网（IoT）相关领域工作一年多，最近一直在看大模型和MQTT相关的知识。相比于枯燥的理论学习，我更信奉**“Learning by Doing”**，所以我想利用时下大火RAG技术搭建一个MQTT协议的个人知识库，下面将详细记录从环境搭建到应用上线的每一步，展示一个完整RAG项目的实现细节。 背景知识RAG 简介RAG（Retriev">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://penggehero.github.io/2025/08/16/RAG%E5%AE%9E%E6%88%98%EF%BC%9A%E7%94%A8LangChain%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%9F%A5%E8%AF%86%E5%BA%93/640.png">
+<meta property="og:image" content="https://penggehero.github.io/2025/08/16/RAG%E5%AE%9E%E6%88%98%EF%BC%9A%E7%94%A8LangChain%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%9F%A5%E8%AF%86%E5%BA%93/image-20250816182559256.png">
+<meta property="og:image" content="https://penggehero.github.io/2025/08/16/RAG%E5%AE%9E%E6%88%98%EF%BC%9A%E7%94%A8LangChain%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%9F%A5%E8%AF%86%E5%BA%93/image-20250816185704062.png">
+<meta property="og:image" content="https://penggehero.github.io/2025/08/16/RAG%E5%AE%9E%E6%88%98%EF%BC%9A%E7%94%A8LangChain%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%9F%A5%E8%AF%86%E5%BA%93/image-20250816190128801.png">
+<meta property="og:image" content="https://penggehero.github.io/2025/08/16/RAG%E5%AE%9E%E6%88%98%EF%BC%9A%E7%94%A8LangChain%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%9F%A5%E8%AF%86%E5%BA%93/image-20250816190506250.png">
+<meta property="article:published_time" content="2025-08-16T08:35:41.000Z">
+<meta property="article:modified_time" content="2025-08-16T13:14:22.582Z">
+<meta property="article:author" content="penggewu">
+<meta property="article:tag" content="langchain">
+<meta property="article:tag" content="rag">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://penggehero.github.io/2025/08/16/RAG%E5%AE%9E%E6%88%98%EF%BC%9A%E7%94%A8LangChain%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%9F%A5%E8%AF%86%E5%BA%93/640.png">
+
+<link rel="canonical" href="https://penggehero.github.io/2025/08/16/RAG%E5%AE%9E%E6%88%98%EF%BC%9A%E7%94%A8LangChain%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%9F%A5%E8%AF%86%E5%BA%93/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>RAG实战：用LangChain快速搭建个人知识库 | 云泽的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">云泽的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://penggehero.github.io/2025/08/16/RAG%E5%AE%9E%E6%88%98%EF%BC%9A%E7%94%A8LangChain%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%9F%A5%E8%AF%86%E5%BA%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="penggewu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="云泽的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          RAG实战：用LangChain快速搭建个人知识库
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-08-16 16:35:41 / 修改时间：21:14:22" itemprop="dateCreated datePublished" datetime="2025-08-16T16:35:41+08:00">2025-08-16</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="RAG实战：用LangChain快速搭建个人知识库"><a href="#RAG实战：用LangChain快速搭建个人知识库" class="headerlink" title="RAG实战：用LangChain快速搭建个人知识库"></a>RAG实战：用LangChain快速搭建个人知识库</h1><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本人在物联网（IoT）相关领域工作一年多，最近一直在看大模型和MQTT相关的知识。相比于枯燥的理论学习，我更信奉**“Learning by Doing”**，所以我想利用时下大火RAG技术搭建一个MQTT协议的个人知识库，下面将详细记录从环境搭建到应用上线的每一步，展示一个完整RAG项目的实现细节。</p>
+<h1 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h1><h2 id="RAG-简介"><a href="#RAG-简介" class="headerlink" title="RAG 简介"></a>RAG 简介</h2><p>RAG（Retrieval-Augmented Generation，检索增强生成） 是一种结合信息检索与生成模型的技术。其核心思想是：在生成答案前，先从外部知识库（如文档、数据库、互联网）中检索相关证据，再基于检索结果和用户输入生成更准确、可靠的回答。如下图所示为一个最简RAG示意图。</p>
+<p><img src="/2025/08/16/RAG%E5%AE%9E%E6%88%98%EF%BC%9A%E7%94%A8LangChain%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%9F%A5%E8%AF%86%E5%BA%93/640.png" alt="图片"></p>
+<p>从形态上说，LLM充当大脑角色用于生成答案，检索充当触手角色用于收集证据。RAG就是一个带触手（外挂知识库）的大模型系统。</p>
+<h1 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h1><h2 id="先决条件"><a href="#先决条件" class="headerlink" title="先决条件"></a>先决条件</h2><ul>
+<li><strong>Python 3.9+</strong>: 确保系统已安装 Python。</li>
+<li><strong>Docker</strong>: 这是运行 PostgreSQL + pgvector 最简单、最推荐的方式。</li>
+<li><strong>OpenAI API Key</strong>: 前往 <a target="_blank" rel="noopener" href="https://platform.openai.com/api-keys">OpenAI 官网</a> 创建一个 API Key。（推荐白嫖地址：<a target="_blank" rel="noopener" href="https://github.com/chatanywhere/GPT_API_free%EF%BC%89">https://github.com/chatanywhere/GPT_API_free）</a></li>
+</ul>
+<h2 id="核心依赖项"><a href="#核心依赖项" class="headerlink" title="核心依赖项"></a>核心依赖项</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># --- Core Framework ---</span><br><span class="line">langchain              # RAG 流程的核心编排框架</span><br><span class="line"></span><br><span class="line"># --- LangChain Integrations ---</span><br><span class="line">langchain-postgres     # 用于与 PGVector 数据库交互的最新、推荐库</span><br><span class="line">langchain-openai       # 用于连接 OpenAI 的 LLM 和 Embedding 模型</span><br><span class="line"></span><br><span class="line"># --- Database Driver ---</span><br><span class="line">psycopg                # PostgreSQL 的 Python 数据库驱动程序，供 langchain-postgres 使用</span><br><span class="line"></span><br><span class="line"># --- User Interface ---</span><br><span class="line">gradio                 # 快速构建交互式 Web UI</span><br><span class="line"></span><br><span class="line"># --- Data Handling ---</span><br><span class="line">pypdf                  # 用于加载和解析 PDF 文档</span><br><span class="line">tiktoken               # OpenAI 官方的分词器，用于计算 token 数量</span><br><span class="line"></span><br><span class="line"># --- Configuration ---</span><br><span class="line">python-dotenv          # 用于从 .env 文件加载环境变量</span><br></pre></td></tr></table></figure>
+
+<p>将以下内容保存到项目的 <code>requirements.txt</code> 文件中，以便于一键安装 (<code>pip install -r requirements.txt</code>)。</p>
+<h2 id="项目结构："><a href="#项目结构：" class="headerlink" title="项目结构："></a>项目结构：</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mqtt-rag-project/</span><br><span class="line">├── .<span class="built_in">env</span>                              <span class="comment"># 环境变量文件</span></span><br><span class="line">├── app.py                            <span class="comment"># Web应用与问答服务</span></span><br><span class="line">├── hivemq-ebook-mqtt-essentials.pdf  <span class="comment"># MQTT PDF 文档</span></span><br><span class="line">├── ingest.py                         <span class="comment"># 数据入库脚本</span></span><br><span class="line">└── start-pgvector.sh                 <span class="comment"># pgvector的启动脚本</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="pgvector向量数据库-docker安装"><a href="#pgvector向量数据库-docker安装" class="headerlink" title="pgvector向量数据库 docker安装"></a>pgvector向量数据库 docker安装</h2><p>先安装postgresql客户端</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install postgresql</span><br></pre></td></tr></table></figure>
+
+<h3 id="start-pgvector-sh"><a href="#start-pgvector-sh" class="headerlink" title="start-pgvector.sh :"></a>start-pgvector.sh :</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker run --name pgvector-db \</span><br><span class="line">  -e POSTGRES_USER=root \</span><br><span class="line">  -e POSTGRES_PASSWORD=root \</span><br><span class="line">  -e POSTGRES_DB=pgvector \</span><br><span class="line">  -p 5432:5432 \</span><br><span class="line">  -d pgvector/pgvector:pg17</span><br></pre></td></tr></table></figure>
+
+<p>验证有没有成功安装</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">psql -h localhost -p 5432 -U root pgvector</span><br></pre></td></tr></table></figure>
+
+<p>输入密码后成功进去就OK。</p>
+<h2 id="pgadmin-安装（可选）"><a href="#pgadmin-安装（可选）" class="headerlink" title="pgadmin 安装（可选）"></a>pgadmin 安装（可选）</h2><p>官网：<a target="_blank" rel="noopener" href="https://www.pgadmin.org/download/">https://www.pgadmin.org/download/</a></p>
+<p>使用pgadmin可视化的看到数据库中的向量存储展示。</p>
+<h1 id="项目细节："><a href="#项目细节：" class="headerlink" title="项目细节："></a>项目细节：</h1><h2 id="整体流程："><a href="#整体流程：" class="headerlink" title="整体流程："></a>整体流程：</h2><p>这是整个项目的完整工作流程图，清晰地展示了数据入库和用户问答两个阶段。</p>
+<img  src=http://www.plantuml.com/plantuml/svg/ZLNVJnfP67sVl-8BVG4RIRVRtNP9RAnrGqWrjOti4o-ZN7KIl3CBOxE-rKOfebPQKSpAWXgjT5l1ThUMKfH_Xdi7tlPFs6_k33FZZuUI0CETxtpdVFUSEqY3ALrEwdEp2KdI5Jr1OFJ9-3WyVH06etpOgQLPOmFwWIrL-ES5exB2TiubIPxKrIGCasSaeMeaQV-Efl1Icb3_09_nzflHQF7D4xvMPGUBHYuD_iTJKmc54eZGQPBI5PK6V71ZH9cUqOSISqG2V6ceH9bKD9dgu5D4NL2Rzu6Sib5NgtwTdI3nEDR2g1edYHZrFzO8VH0929IuAq1nMPSdv1G1trZuDsBfjvT4vV2GH6WSKBqz0YjMS8HkeMeSvtbnZMNtS0Gg9dWoHvBpIEaC44uIGgzg2oVbkA92D28Oef6h5ICodNuu8ojKRBYumWbaJSEnhGbm_HhOo2YMXSV6---eLXckkFgbWG7uhxon1Jy4mVPWwH1zx6wVykfdy1lvZwvvm9UFEdkh0HWOa2HtjV--lUKXwBHoM03Ql3wZKd1iCLrNdibwpr59ihwzK1J0ihkTipFszPHbqcpvKupwPd_N4H-Vyda0mgWGtCRwsbTUMs_N_-PRBtdn0_kh4AETsXV-yGNBlUw-N6UhMowpvQ_uXFuBalDifsHt430fJYwXFEp3Go7uCGX-NbyotZLuuSZUjTohG8ooustsekAeOMzMxOvEFypEyD05VXkJoR5isSkCbGwjoTlRxX2wiC7MJZ1smYbMNKMm3tZXaBKAtWwzlROyVlF1t38ZZrHVhAXwFJOF9BJFMdZVibSi86yqObbJh7GMikpW7TzBTyuta1fxTFUttSamiz68YS0OMkwil-u-Nx3BFBAmqBas8okPUNPznSrb9sb79uA_mqp1QJdfnLpZf4rcsdWdQ4_iXM22MZkOOMEdtcusMUCjpnMDV_UlSr2G_XJi9QZu735iwH_ZpyKOVUHD9VZRzMoxle8BWSiMstf4hv_n39OMsRS6Z2NLMKqFuSbra70JsAioErgnr0OSA9xd4DpjxJVRBx5c0-E8CkmshdRpwEFRLNyl27rz-BHcpVM-FciE8r_6F27QV9ZjPRnwJNYFrSp5BvPLeivjqsxkcWd9dB3bDUDzxPg4cDd2LDsw6Ajs_PXLIxnm6gDy-zmuQ5YDyQXXteyBlDZWcnbUAWOkXSdpIyHf41zkvd_K_m00>
+
+<h2 id="env-（环境变量）"><a href="#env-（环境变量）" class="headerlink" title=".env （环境变量）"></a>.env （环境变量）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># .env 文件</span><br><span class="line">OPENAI_API_KEY=&quot;xxxx&quot;</span><br><span class="line">OPENAI_BASE_URL=&quot;xxxxx&quot;</span><br><span class="line">DATABASE_URL=&quot;postgresql://root:root@localhost:5432/pgvector&quot;</span><br></pre></td></tr></table></figure>
+
+<h2 id="hivemq-ebook-mqtt-essentials-pdf-MQTT相关的书籍"><a href="#hivemq-ebook-mqtt-essentials-pdf-MQTT相关的书籍" class="headerlink" title="hivemq-ebook-mqtt-essentials.pdf(MQTT相关的书籍)"></a>hivemq-ebook-mqtt-essentials.pdf(MQTT相关的书籍)</h2><p>hivemq组件推出的一本mqtt相关的书籍，需要把这本书解析为知识库。</p>
+<h2 id="ingest-py-数据入库脚本"><a href="#ingest-py-数据入库脚本" class="headerlink" title="ingest.py (数据入库脚本)"></a>ingest.py (数据入库脚本)</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">import</span> psycopg</span><br><span class="line"><span class="keyword">from</span> dotenv <span class="keyword">import</span> load_dotenv</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> langchain_community.document_loaders <span class="keyword">import</span> PyPDFLoader</span><br><span class="line"><span class="keyword">from</span> langchain.text_splitter <span class="keyword">import</span> RecursiveCharacterTextSplitter</span><br><span class="line"><span class="keyword">from</span> langchain_openai <span class="keyword">import</span> OpenAIEmbeddings</span><br><span class="line"><span class="keyword">from</span> langchain_community.vectorstores.pgvector <span class="keyword">import</span> PGVector</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 1. ⚙️ 配置日志系统 ---</span></span><br><span class="line">logging.basicConfig(</span><br><span class="line">    level=logging.INFO,</span><br><span class="line">    <span class="built_in">format</span>=<span class="string">&#x27;%(asctime)s - %(levelname)s - %(message)s&#x27;</span>,</span><br><span class="line">    datefmt=<span class="string">&#x27;%Y-%m-%d %H:%M:%S&#x27;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 2. 🔑 加载环境变量和配置 ---</span></span><br><span class="line">logging.info(<span class="string">&quot;🚀 开始数据入库流程...&quot;</span>)</span><br><span class="line">load_dotenv()</span><br><span class="line">logging.info(<span class="string">&quot;✅ .env 文件加载成功&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从环境变量中安全地获取配置</span></span><br><span class="line">PDF_PATH = <span class="string">&quot;hivemq-ebook-mqtt-essentials.pdf&quot;</span>  <span class="comment"># 你可以把它也放入 .env</span></span><br><span class="line">COLLECTION_NAME = <span class="string">&quot;mqtt_docs&quot;</span></span><br><span class="line">CONNECTION_STRING = os.getenv(<span class="string">&quot;DATABASE_URL&quot;</span>)</span><br><span class="line">OPENAI_API_KEY = os.getenv(<span class="string">&quot;OPENAI_API_KEY&quot;</span>)</span><br><span class="line">OPENAI_BASE_URL = os.getenv(<span class="string">&quot;OPENAI_BASE_URL&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查关键配置是否存在</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">all</span>([CONNECTION_STRING, OPENAI_API_KEY, OPENAI_BASE_URL]):</span><br><span class="line">    error_msg = <span class="string">&quot;❌ 关键环境变量缺失！请检查 .env 文件是否包含 DATABASE_URL, OPENAI_API_KEY, OPENAI_BASE_URL&quot;</span></span><br><span class="line">    logging.error(error_msg)</span><br><span class="line">    <span class="keyword">raise</span> ValueError(error_msg)</span><br><span class="line">logging.info(<span class="string">&quot;👍 所有环境变量配置加载完毕&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">ingest_data</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    加载、分割、嵌入并存储PDF文档数据到PGVector。</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 检查PDF文件是否存在</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(PDF_PATH):</span><br><span class="line">        logging.error(<span class="string">f&quot;🔥 错误: PDF文件未找到于 <span class="subst">&#123;PDF_PATH&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    connection = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># --- 3. 📄 加载PDF文档 ---</span></span><br><span class="line">        logging.info(<span class="string">f&quot;📄 正在加载文档: <span class="subst">&#123;PDF_PATH&#125;</span>...&quot;</span>)</span><br><span class="line">        loader = PyPDFLoader(PDF_PATH)</span><br><span class="line">        documents = loader.load()</span><br><span class="line">        logging.info(<span class="string">f&quot;✅ 成功加载 <span class="subst">&#123;<span class="built_in">len</span>(documents)&#125;</span> 页文档。&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># --- 4. 🔪 分割文档为文本块 ---</span></span><br><span class="line">        logging.info(<span class="string">&quot;🔪 正在分割文档为文本块...&quot;</span>)</span><br><span class="line">        text_splitter = RecursiveCharacterTextSplitter(</span><br><span class="line">            chunk_size=<span class="number">1000</span>,</span><br><span class="line">            chunk_overlap=<span class="number">150</span>,</span><br><span class="line">            length_function=<span class="built_in">len</span></span><br><span class="line">        )</span><br><span class="line">        chunks = text_splitter.split_documents(documents)</span><br><span class="line">        logging.info(<span class="string">f&quot;✅ 文档被分割成 <span class="subst">&#123;<span class="built_in">len</span>(chunks)&#125;</span> 个文本块。&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># --- 5. 🧠 创建文本嵌入模型 ---</span></span><br><span class="line">        logging.info(<span class="string">&quot;🧠 正在初始化 OpenAI Embedding 模型 (text-embedding-3-small)...&quot;</span>)</span><br><span class="line">        embeddings = OpenAIEmbeddings(</span><br><span class="line">            model=<span class="string">&quot;text-embedding-3-small&quot;</span>,</span><br><span class="line">            api_key=OPENAI_API_KEY,</span><br><span class="line">            base_url=OPENAI_BASE_URL</span><br><span class="line">        )</span><br><span class="line">        logging.info(<span class="string">&quot;✅ 嵌入模型初始化完成。&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># --- 6. 📦 将数据存入 PGVector ---</span></span><br><span class="line">        logging.info(<span class="string">f&quot;🔗 正在连接到数据库: <span class="subst">&#123;CONNECTION_STRING.split(<span class="string">&#x27;@&#x27;</span>)[-<span class="number">1</span>]&#125;</span>&quot;</span>)</span><br><span class="line">        connection = psycopg.connect(CONNECTION_STRING)</span><br><span class="line">        logging.info(<span class="string">&quot;🎉 数据库连接成功！&quot;</span>)</span><br><span class="line"></span><br><span class="line">        logging.info(<span class="string">f&quot;📦 准备将 <span class="subst">&#123;<span class="built_in">len</span>(chunks)&#125;</span> 个文本块存入集合 &#x27;<span class="subst">&#123;COLLECTION_NAME&#125;</span>&#x27;...&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 使用 from_documents 方法，并设置 pre_delete_collection=True</span></span><br><span class="line">        <span class="comment"># 这会先删除同名旧集合（如果存在），确保数据从零开始，非常适合重新入库</span></span><br><span class="line">        PGVector.from_documents(</span><br><span class="line">            documents=chunks,</span><br><span class="line">            embedding=embeddings,</span><br><span class="line">            collection_name=COLLECTION_NAME,</span><br><span class="line">            connection_string=CONNECTION_STRING,</span><br><span class="line">            pre_delete_collection=<span class="literal">True</span>,  <span class="comment"># ✨ 最佳实践: 保证每次都是全新入库</span></span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        logging.info(<span class="string">&quot;🎉 数据处理流程圆满完成！&quot;</span>)</span><br><span class="line">        logging.info(<span class="string">f&quot;✅ <span class="subst">&#123;<span class="built_in">len</span>(chunks)&#125;</span> 个文档块已成功存入集合 &#x27;<span class="subst">&#123;COLLECTION_NAME&#125;</span>&#x27;。&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        logging.error(<span class="string">f&quot;🔥 数据处理流程中发生严重错误: <span class="subst">&#123;e&#125;</span>&quot;</span>, exc_info=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        <span class="comment"># 确保数据库连接在使用后被关闭</span></span><br><span class="line">        <span class="keyword">if</span> connection:</span><br><span class="line">            connection.close()</span><br><span class="line">            logging.info(<span class="string">&quot;🚪 数据库连接已关闭。&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    ingest_data()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>流程总结：</p>
+<pre class="mermaid">%% `ingest.py`
+graph TD
+    subgraph "准备阶段 (Preparation)"
+        A[开始 Ingestion 脚本] --> B["配置与加载<br>(Logging, .env)"];
+    end
+
+    subgraph "数据处理 (Processing)"
+        B --> C{PDF 文件存在?};
+        C -- 否 --> D[记录错误并退出];
+        C -- 是 --> E["加载 PDF 文档<br>(使用 PyPDFLoader)"];
+        E --> F["分割文档为文本块 (Chunks)<br>(使用 RecursiveCharacterTextSplitter)"];
+        F --> G["初始化嵌入模型<br>(OpenAI text-embedding-3-small)"];
+    end
+    
+    subgraph "数据库操作 (Database Operations)"
+        G --> H["连接到 PostgreSQL 数据库<br>(使用 psycopg)"];
+        H --> I[调用 PGVector.from_documents];
+        
+        subgraph I [内部流程]
+            direction TB
+            I1{pre_delete_collection=True?};
+            I1 -- 是 --> I2[清空/删除旧的 Collection];
+            I1 -- 否 --> I3;
+            I2 --> I3["对于每一个 Chunk..."];
+            I3 --> I4["调用 OpenAI API<br>将文本转换为 Vector"];
+            I4 --> I5["将 (文本 + Vector)<br>插入数据库"];
+            I5 --> I3;
+        end
+    end
+
+    subgraph "收尾阶段 (Finalization)"
+         I --> J["记录成功日志"];
+         J --> K["关闭数据库连接<br>(在 finally 块中确保执行)"];
+         K --> L[流程结束];
+    end</pre>
+
+
+
+<p>这个脚本是一个<strong>一次性</strong>的、<strong>离线</strong>运行的程序，作用就构建知识库。</p>
+<ul>
+<li><strong>🎯 目的</strong>: 将非结构化的 PDF 文档转换为结构化的、可供快速检索的向量数据。</li>
+<li>核心流程<ol>
+<li><strong>加载 (Load)</strong>: 读取指定的 MQTT PDF 文档内容。</li>
+<li><strong>分割 (Split)</strong>: 将整个文档的长文本切割成更小的、带有上下文重叠的文本块 (Chunks)。</li>
+<li><strong>嵌入 (Embed)</strong>: 调用 OpenAI 的 <code>text-embedding-3-small</code> 模型，将每一个文本块转换成一个高维数学向量。</li>
+<li><strong>存储 (Store)</strong>: 将文本块和其对应的向量一起存入 PostgreSQL 数据库的 <code>pgvector</code> 扩展中，并使用 <code>pre_delete_collection=True</code> 确保每次都是全新的数据。</li>
+</ol>
+</li>
+</ul>
+<p>运行：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">python ingest.py </span><br><span class="line">2025-08-16 17:17:22 - INFO - 🚀 开始数据入库流程...</span><br><span class="line">2025-08-16 17:17:22 - INFO - ✅ .<span class="built_in">env</span> 文件加载成功</span><br><span class="line">2025-08-16 17:17:22 - INFO - 👍 所有环境变量配置加载完毕</span><br><span class="line">2025-08-16 17:17:22 - INFO - 📄 正在加载文档: hivemq-ebook-mqtt-essentials.pdf...</span><br><span class="line">2025-08-16 17:17:24 - INFO - ✅ 成功加载 90 页文档。</span><br><span class="line">2025-08-16 17:17:24 - INFO - 🔪 正在分割文档为文本块...</span><br><span class="line">2025-08-16 17:17:24 - INFO - ✅ 文档被分割成 317 个文本块。</span><br><span class="line">2025-08-16 17:17:24 - INFO - 🧠 正在初始化 OpenAI Embedding 模型 (text-embedding-3-small)...</span><br><span class="line">2025-08-16 17:17:24 - INFO - ✅ 嵌入模型初始化完成。</span><br><span class="line">2025-08-16 17:17:24 - INFO - 🔗 正在连接到数据库: localhost:5432/pgvector</span><br><span class="line">2025-08-16 17:17:24 - INFO - 🎉 数据库连接成功！</span><br><span class="line">2025-08-16 17:17:24 - INFO - 📦 准备将 317 个文本块存入集合 <span class="string">&#x27;mqtt_docs&#x27;</span>...</span><br><span class="line">2025-08-16 17:17:27 - INFO - HTTP Request: POST https://api.chatanywhere.tech/embeddings <span class="string">&quot;HTTP/1.1 200 OK&quot;</span></span><br><span class="line">/usr/local/lib/python3.11/site-packages/langchain_community/vectorstores/pgvector.py:490: LangChainPendingDeprecationWarning: Please use JSONB instead of JSON <span class="keyword">for</span> metadata. This change will allow <span class="keyword">for</span> more efficient querying that involves filtering based on metadata. Please note that filtering operators have been changed when using JSONB metadata to be prefixed with a $ sign to avoid name collisions with columns. If you<span class="string">&#x27;re using an existing database, you will need to create a db migration for your metadata column to be JSONB and update your queries to use the new operators. </span></span><br><span class="line"><span class="string">  store = cls(</span></span><br><span class="line"><span class="string">2025-08-16 17:17:35 - INFO - 🎉 数据处理流程圆满完成！</span></span><br><span class="line"><span class="string">2025-08-16 17:17:35 - INFO - ✅ 317 个文档块已成功存入集合 &#x27;</span>mqtt_docs<span class="string">&#x27;。</span></span><br><span class="line"><span class="string">2025-08-16 17:17:35 - INFO - 🚪 数据库连接已关闭。</span></span><br></pre></td></tr></table></figure>
+
+<p>pgvector 有告警是因为 LangChain 推荐使用性能更好的 <code>JSONB</code> 格式来存储元数据。</p>
+<h3 id="数据库向量："><a href="#数据库向量：" class="headerlink" title="数据库向量："></a>数据库向量：</h3><p>用pgadmin工具可以看到数据库里面创建了2张表：</p>
+<p><img src="/2025/08/16/RAG%E5%AE%9E%E6%88%98%EF%BC%9A%E7%94%A8LangChain%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%9F%A5%E8%AF%86%E5%BA%93/image-20250816182559256.png" alt="image-20250816182559256"></p>
+<p><strong><code>langchain_pg_collection</code> (集合目录表)</strong></p>
+<ul>
+<li><strong>作用</strong>: 记录了你创建的所有向量集合（Collections）的名称和唯一ID。</li>
+<li><strong>内容</strong>: 每行代表一个独立的知识库（例如 <code>mqtt_docs</code>）。</li>
+</ul>
+<p><strong><code>langchain_pg_embedding</code> (嵌入数据表)</strong></p>
+<ul>
+<li><strong>作用</strong>: 存储了<strong>所有集合</strong>的全部数据。</li>
+<li><strong>内容</strong>: 每行包含一个具体的文本块（document）、其对应的向量（embedding）以及一个 <code>collection_id</code>，用于指明这条数据属于哪个集合。</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE TABLE</span> IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> public.langchain_pg_collection</span><br><span class="line">(</span><br><span class="line">    <span class="comment">-- 字段注释 --</span></span><br><span class="line">    name      <span class="type">character</span> <span class="type">varying</span>,  <span class="comment">-- 集合的易读名称，由开发者在代码中指定 (例如 &#x27;mqtt_docs&#x27;)。</span></span><br><span class="line">    cmetadata json,               <span class="comment">-- (Collection Metadata) 用于存储关于整个集合的元数据的 JSON 字段。例如，可以存储集合的描述、来源信息等。</span></span><br><span class="line">    uuid      uuid <span class="keyword">NOT NULL</span>,      <span class="comment">-- 集合的唯一标识符 (UUID)，作为这张表的主键 (Primary Key)。它被 `langchain_pg_embedding` 表用作外键来关联数据。</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 约束注释 --</span></span><br><span class="line">    <span class="keyword">CONSTRAINT</span> langchain_pg_collection_pkey <span class="keyword">PRIMARY KEY</span> (uuid) <span class="comment">-- 将 `uuid` 字段设置为主键，确保每个集合都有一个唯一的、非空的标识符。</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE TABLE</span> IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> public.langchain_pg_embedding</span><br><span class="line">(</span><br><span class="line">    <span class="comment">-- 字段注释 --</span></span><br><span class="line">    collection_id uuid,               <span class="comment">-- 外键 (Foreign Key)，关联到 `langchain_pg_collection` 表中的 `uuid`。它标识了这条数据属于哪一个集合。</span></span><br><span class="line">    embedding     vector,             <span class="comment">-- 文本块的向量表示。这是由 `pgvector` 扩展提供的数据类型，用于进行高效的相似度搜索。</span></span><br><span class="line">    document      <span class="type">character</span> <span class="type">varying</span>,  <span class="comment">-- 原始的文本块内容。这是 RAG 流程中检索到的、将提供给 LLM 作为上下文的实际文本。</span></span><br><span class="line">    cmetadata     json,               <span class="comment">-- (Content Metadata) 关于单个文本块的元数据的 JSON 字段。通常用于存储来源信息 (如文件名、页码) 以便追溯和过滤。较新版本中，此字段类型已升级为 `JSONB` 以提高查询性能。</span></span><br><span class="line">    custom_id     <span class="type">character</span> <span class="type">varying</span>,  <span class="comment">-- 一个可选的、由用户自定义的 ID 字段。如果开发者在添加文档时提供了 `ids` 参数，这些 ID 会被存储在这里，方便与外部系统进行关联或进行特定 ID 的数据操作。</span></span><br><span class="line">    uuid          uuid <span class="keyword">NOT NULL</span>,      <span class="comment">-- 这条嵌入数据记录自身的唯一标识符 (UUID)，作为这张表的主键。</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 约束注释 --</span></span><br><span class="line">    <span class="keyword">CONSTRAINT</span> langchain_pg_embedding_pkey <span class="keyword">PRIMARY KEY</span> (uuid), <span class="comment">-- 将 `uuid` 字段设置为主键，确保表中的每一条数据记录都是唯一的。</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">CONSTRAINT</span> langchain_pg_embedding_collection_id_fkey <span class="keyword">FOREIGN KEY</span> (collection_id) <span class="comment">-- 定义了 `collection_id` 是一个外键，它必须引用 `langchain_pg_collection` 表中真实存在的 `uuid`。</span></span><br><span class="line">        <span class="keyword">REFERENCES</span> public.langchain_pg_collection (uuid) <span class="keyword">MATCH</span> SIMPLE</span><br><span class="line">        <span class="keyword">ON</span> <span class="keyword">UPDATE</span> <span class="keyword">NO</span> ACTION</span><br><span class="line">        <span class="keyword">ON</span> <span class="keyword">DELETE</span> CASCADE <span class="comment">-- 这是一个关键的级联删除规则：当一个集合从 `langchain_pg_collection` 表中被删除时，所有属于该集合的数据将自动从这张表中被删除，保证了数据的完整性。</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+
+
+<p>用sql看下数据:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">pgvector=# <span class="keyword">select</span> * from langchain_pg_collection;</span><br><span class="line">   name    | cmetadata |                 uuid                 </span><br><span class="line">-----------+-----------+--------------------------------------</span><br><span class="line"> mqtt_docs | null      | 6b065562-e20d-4758-8097-8459dd3618db</span><br><span class="line">(1 row)</span><br><span class="line">pgvector=#  <span class="keyword">select</span> count(*) from langchain_pg_embedding;</span><br><span class="line"> count </span><br><span class="line">-------</span><br><span class="line">   317</span><br><span class="line">(1 row)</span><br></pre></td></tr></table></figure>
+
+<p>langchain_pg_embedding 数量和日志里面对的上的，langchain_pg_embedding 的表数据太长了，下图展示一下：</p>
+<p><img src="/2025/08/16/RAG%E5%AE%9E%E6%88%98%EF%BC%9A%E7%94%A8LangChain%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%9F%A5%E8%AF%86%E5%BA%93/image-20250816185704062.png" alt="image-20250816185704062"></p>
+<p>这里直观的看到文本转为为向量并存储到数据库中了。</p>
+<h2 id="app-py-Web应用与问答服务"><a href="#app-py-Web应用与问答服务" class="headerlink" title="app.py (Web应用与问答服务)"></a><code>app.py</code> (Web应用与问答服务)</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">import</span> gradio <span class="keyword">as</span> gr</span><br><span class="line"><span class="keyword">import</span> psycopg</span><br><span class="line"><span class="keyword">from</span> dotenv <span class="keyword">import</span> load_dotenv</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> langchain_community.vectorstores.pgvector <span class="keyword">import</span> PGVector</span><br><span class="line"><span class="keyword">from</span> langchain_openai <span class="keyword">import</span> ChatOpenAI, OpenAIEmbeddings</span><br><span class="line"><span class="keyword">from</span> langchain.prompts <span class="keyword">import</span> PromptTemplate</span><br><span class="line"><span class="keyword">from</span> langchain.schema.runnable <span class="keyword">import</span> RunnablePassthrough, RunnableLambda</span><br><span class="line"><span class="keyword">from</span> langchain.schema.output_parser <span class="keyword">import</span> StrOutputParser</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 1. ⚙️ 配置日志系统 ---</span></span><br><span class="line">logging.basicConfig(</span><br><span class="line">    level=logging.INFO,</span><br><span class="line">    <span class="built_in">format</span>=<span class="string">&#x27;%(asctime)s - %(levelname)s - %(message)s&#x27;</span>,</span><br><span class="line">    datefmt=<span class="string">&#x27;%Y-%m-%d %H:%M:%S&#x27;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 2. 🔑 加载环境变量和配置 ---</span></span><br><span class="line">logging.info(<span class="string">&quot;🚀 应用开始启动...&quot;</span>)</span><br><span class="line">load_dotenv()</span><br><span class="line">logging.info(<span class="string">&quot;✅ .env 文件加载成功&quot;</span>)</span><br><span class="line"></span><br><span class="line">CONNECTION_STRING = os.getenv(<span class="string">&quot;DATABASE_URL&quot;</span>)</span><br><span class="line">COLLECTION_NAME = <span class="string">&quot;mqtt_docs&quot;</span></span><br><span class="line">OPENAI_API_KEY = os.getenv(<span class="string">&quot;OPENAI_API_KEY&quot;</span>)</span><br><span class="line">OPENAI_BASE_URL = os.getenv(<span class="string">&quot;OPENAI_BASE_URL&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查关键配置是否存在</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">all</span>([CONNECTION_STRING, COLLECTION_NAME, OPENAI_API_KEY, OPENAI_BASE_URL]):</span><br><span class="line">    error_msg = <span class="string">&quot;❌ 关键环境变量缺失！请检查 .env 文件是否包含 DATABASE_URL, OPENAI_API_KEY, OPENAI_BASE_URL&quot;</span></span><br><span class="line">    logging.error(error_msg)</span><br><span class="line">    <span class="keyword">raise</span> ValueError(error_msg)</span><br><span class="line">logging.info(<span class="string">&quot;👍 所有环境变量配置加载完毕&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 3. 🔗 初始化数据库连接 ---</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    logging.info(<span class="string">f&quot;🔗 正在连接到数据库: <span class="subst">&#123;CONNECTION_STRING.split(<span class="string">&#x27;@&#x27;</span>)[-<span class="number">1</span>]&#125;</span>&quot;</span>)</span><br><span class="line">    connection = psycopg.connect(CONNECTION_STRING)</span><br><span class="line">    logging.info(<span class="string">&quot;🎉 数据库连接成功！&quot;</span>)</span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">    logging.error(<span class="string">f&quot;🔥 数据库连接失败: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">raise</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 4. 🧠 初始化 AI 模型 ---</span></span><br><span class="line">logging.info(<span class="string">&quot;🧠 正在初始化 OpenAI 模型...&quot;</span>)</span><br><span class="line">llm = ChatOpenAI(</span><br><span class="line">    base_url=OPENAI_BASE_URL,</span><br><span class="line">    api_key=OPENAI_API_KEY,</span><br><span class="line">    model=<span class="string">&quot;gpt-4o&quot;</span>,</span><br><span class="line">    temperature=<span class="number">0.1</span>,</span><br><span class="line">    streaming=<span class="literal">True</span></span><br><span class="line">)</span><br><span class="line">embeddings = OpenAIEmbeddings(</span><br><span class="line">    model=<span class="string">&quot;text-embedding-3-small&quot;</span>,</span><br><span class="line">    api_key=OPENAI_API_KEY,</span><br><span class="line">    base_url=OPENAI_BASE_URL</span><br><span class="line">)</span><br><span class="line">logging.info(<span class="string">&quot;🤖 LLM 和 Embedding 模型初始化完成&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 5. 📚 初始化向量存储和检索器 ---</span></span><br><span class="line">logging.info(<span class="string">f&quot;📚 正在连接到向量集合: &#x27;<span class="subst">&#123;COLLECTION_NAME&#125;</span>&#x27;&quot;</span>)</span><br><span class="line">vectorstore = PGVector(</span><br><span class="line">    connection_string=CONNECTION_STRING,</span><br><span class="line">    collection_name=COLLECTION_NAME,</span><br><span class="line">    embedding_function=embeddings,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回10个最相关的文档</span></span><br><span class="line">retriever = vectorstore.as_retriever(search_kwargs=&#123;<span class="string">&#x27;k&#x27;</span>: <span class="number">10</span>&#125;)</span><br><span class="line">logging.info(<span class="string">&quot;✅ 向量存储和检索器准备就绪&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 6. 🛠️ 构建 RAG 链 (带日志记录) ---</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 提示模板</span></span><br><span class="line">template = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">你是一个关于MQTT协议的技术专家。请根据下面提供的上下文信息，用中文、清晰、准确地回答用户的问题。</span></span><br><span class="line"><span class="string">如果上下文中没有足够的信息来回答问题，请明确说明“根据我所掌握的知识，无法回答这个问题”，不要编造答案。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">上下文:</span></span><br><span class="line"><span class="string">&#123;context&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">问题:</span></span><br><span class="line"><span class="string">&#123;question&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">回答:</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">prompt = PromptTemplate.from_template(template)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">format_docs</span>(<span class="params">docs</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;\n\n&quot;</span>.join(doc.page_content <span class="keyword">for</span> doc <span class="keyword">in</span> docs)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">log_retrieved_documents</span>(<span class="params">docs</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;一个用于在链中记录检索到的文档的函数&quot;&quot;&quot;</span></span><br><span class="line">    logging.info(<span class="string">f&quot;🔍 向量检索完成，找到 <span class="subst">&#123;<span class="built_in">len</span>(docs)&#125;</span> 个相关文档:&quot;</span>)</span><br><span class="line">    <span class="keyword">for</span> i, doc <span class="keyword">in</span> <span class="built_in">enumerate</span>(docs):</span><br><span class="line">        content_preview = doc.page_content.replace(<span class="string">&#x27;\n&#x27;</span>, <span class="string">&#x27; &#x27;</span>).strip()[:<span class="number">120</span>]</span><br><span class="line">        page_num = doc.metadata.get(<span class="string">&#x27;page&#x27;</span>, <span class="string">&#x27;N/A&#x27;</span>)</span><br><span class="line">        logging.info(<span class="string">f&quot;  📄 文档 <span class="subst">&#123;i + <span class="number">1</span>&#125;</span> (页码: <span class="subst">&#123;page_num&#125;</span>): &#x27;<span class="subst">&#123;content_preview&#125;</span>...&#x27;&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> docs</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">logging.info(<span class="string">&quot;⛓️ 正在构建 RAG 链...&quot;</span>)</span><br><span class="line">rag_chain = (</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">&quot;context&quot;</span>: retriever | RunnableLambda(log_retrieved_documents) | format_docs,</span><br><span class="line">            <span class="string">&quot;question&quot;</span>: RunnablePassthrough()</span><br><span class="line">        &#125;</span><br><span class="line">        | prompt</span><br><span class="line">        | llm</span><br><span class="line">        | StrOutputParser()</span><br><span class="line">)</span><br><span class="line">logging.info(<span class="string">&quot;✅ RAG 链构建完成&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 7. 💬 定义 Gradio 聊天功能 ---</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">chat_function</span>(<span class="params">message, history</span>):</span><br><span class="line">    logging.info(<span class="string">f&quot;💬 收到用户新问题: &#x27;<span class="subst">&#123;message&#125;</span>&#x27;&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 流式处理</span></span><br><span class="line">    response_generator = rag_chain.stream(message)</span><br><span class="line">    partial_message = <span class="string">&quot;&quot;</span></span><br><span class="line">    logging.info(<span class="string">&quot;✍️ 开始向用户流式传输回答...&quot;</span>)</span><br><span class="line">    <span class="keyword">for</span> chunk <span class="keyword">in</span> response_generator:</span><br><span class="line">        partial_message += chunk</span><br><span class="line">        <span class="keyword">yield</span> partial_message</span><br><span class="line">    logging.info(<span class="string">&quot;✅ 流式传输完成&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 8. 🌐 启动 Gradio 应用 ---</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    logging.info(<span class="string">&quot;🌐 准备启动 Gradio Web UI...&quot;</span>)</span><br><span class="line">    demo = gr.ChatInterface(</span><br><span class="line">        fn=chat_function,</span><br><span class="line">        title=<span class="string">&quot;MQTT 协议知识库 🤖&quot;</span>,</span><br><span class="line">        description=<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        这是一个基于 MQTT 协议文档的 RAG 问答机器人。</span></span><br><span class="line"><span class="string">        你可以用中文提问关于 MQTT 协议的任何问题，例如：</span></span><br><span class="line"><span class="string">        - &quot;MQTT的QoS等级有哪些？分别解释一下。&quot;</span></span><br><span class="line"><span class="string">        - &quot;CONNECT报文的结构是怎样的？&quot;</span></span><br><span class="line"><span class="string">        - &quot;什么是遗嘱消息（Will Message）？&quot;</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span>,</span><br><span class="line">        <span class="built_in">type</span>=<span class="string">&quot;messages&quot;</span>,</span><br><span class="line">        chatbot=gr.Chatbot(height=<span class="number">600</span>),</span><br><span class="line">        textbox=gr.Textbox(placeholder=<span class="string">&quot;请输入你关于MQTT协议的问题...&quot;</span>, container=<span class="literal">False</span>, scale=<span class="number">7</span>),</span><br><span class="line">        theme=<span class="string">&quot;soft&quot;</span>,</span><br><span class="line">    )</span><br><span class="line">    demo.launch()</span><br></pre></td></tr></table></figure>
+
+<p>流程总结：</p>
+<pre class="mermaid">%% `app.py`
+graph TD
+    subgraph "阶段一: 应用启动与初始化"
+        A[启动 app.py]
+        A --> B["配置与加载<br>(Logging, .env)"]
+        B --> C["建立持久的<br>数据库连接 (psycopg)"]
+        C --> D["初始化 AI 模型<br>(LLM: GPT-4o & Embeddings)"]
+        D --> E["初始化向量存储<br>并创建 Retriever"]
+        E --> F["构建 RAG 链<br>(使用 LangChain LCEL)"]
+        F --> G["启动 Gradio Web UI<br>(应用进入监听状态)"]
+    end
+
+    %% 添加一个从阶段一到阶段二的逻辑连接线
+    G -. "用户开始交互" .-> User
+
+    subgraph "阶段二: 实时问答流程"
+        User["User"]
+        UI[Gradio UI]
+        RAG["LangChain RAG Chain<br>(在 app.py 中运行)"]
+        DB["PGVector Database"]
+        LLM["LLM (GPT-4o)"]
+
+        User -- 1.输入问题 --> UI
+        UI -- 2.将问题发送给chat_function--> RAG
+        RAG -- 3.向量化问题并检索--> DB
+        DB -- "4.返回 K 个最相关的<br>文本块 (上下文)" --> RAG
+        RAG -- "5.构建最终 Prompt:<br>[上下文] + [原始问题]" --> LLM
+        LLM -- 6.<b>流式</b>生成答案 --> RAG
+        RAG -- "7.将答案 <b>流式</b> 传输回 UI" --> UI
+        UI -- "8.实时更新聊天窗口<br>(打字机效果)" --> User
+    end</pre>
+
+
+
+<p>这个脚本是一个<strong>持续运行</strong>的、<strong>在线</strong>提供服务的程序，它构成了用户与之交互的后端和前端。</p>
+<ul>
+<li><strong>🎯 目的</strong>: 接收用户问题，利用已构建的知识库生成精准回答，并通过 Web 界面展示。</li>
+<li>核心流程<ol>
+<li><strong>初始化 (Initialize)</strong>: 在启动时，加载所有配置，连接数据库，并准备好大语言模型 (GPT-4o)、嵌入模型和向量检索器。</li>
+<li><strong>构建RAG链 (Build RAG Chain)</strong>: 使用 LangChain Expression Language (LCEL) 定义一个清晰的、可流式处理的问答逻辑链。</li>
+<li><strong>提供Web界面 (Provide Web UI)</strong>: 启动一个 Gradio 服务，创建一个用户友好的聊天窗口。</li>
+<li>处理用户请求 (Handle User Request)<ul>
+<li>接收用户输入的问题。</li>
+<li><strong>检索 (Retrieve)</strong>: 将问题向量化，并在 <code>pgvector</code> 中快速找到最相似的 N 个文本块（即最相关的上下文）。</li>
+<li><strong>增强 (Augment)</strong>: 将检索到的上下文和原始问题组合成一个详细的提示 (Prompt)。</li>
+<li><strong>生成 (Generate)</strong>: 将这个增强后的提示发送给 GPT-4o，让它基于提供的上下文生成回答。</li>
+<li><strong>流式返回 (Stream)</strong>: 将 GPT-4o 生成的答案以流的形式实时传输回前端，实现打字机效果。</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<p>运行：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># python app.py</span></span><br><span class="line">2025-08-16 18:59:23 - INFO - 🚀 应用开始启动...</span><br><span class="line">2025-08-16 18:59:23 - INFO - ✅ .<span class="built_in">env</span> 文件加载成功</span><br><span class="line">2025-08-16 18:59:23 - INFO - 👍 所有环境变量配置加载完毕</span><br><span class="line">2025-08-16 18:59:23 - INFO - 🔗 正在连接到数据库: localhost:5432/pgvector</span><br><span class="line">2025-08-16 18:59:23 - INFO - 🎉 数据库连接成功！</span><br><span class="line">2025-08-16 18:59:23 - INFO - 🧠 正在初始化 OpenAI 模型...</span><br><span class="line">2025-08-16 18:59:23 - INFO - 🤖 LLM 和 Embedding 模型初始化完成</span><br><span class="line">2025-08-16 18:59:23 - INFO - 📚 正在连接到向量集合: <span class="string">&#x27;mqtt_docs&#x27;</span></span><br><span class="line">/root/project/mqtt-rag-project/app.py:64: LangChainPendingDeprecationWarning: This class is pending deprecation and may be removed <span class="keyword">in</span> a future version. You can swap to using the `PGVector` implementation <span class="keyword">in</span> `langchain_postgres`. Please <span class="built_in">read</span> the guidelines <span class="keyword">in</span> the doc-string of this class to follow prior to migrating as there are some differences between the implementations. See &lt;https://github.com/langchain-ai/langchain-postgres&gt; <span class="keyword">for</span> details about the new implementation.</span><br><span class="line">  vectorstore = PGVector(</span><br><span class="line">/root/project/mqtt-rag-project/app.py:64: LangChainPendingDeprecationWarning: Please use JSONB instead of JSON <span class="keyword">for</span> metadata. This change will allow <span class="keyword">for</span> more efficient querying that involves filtering based on metadata. Please note that filtering operators have been changed when using JSONB metadata to be prefixed with a $ sign to avoid name collisions with columns. If you<span class="string">&#x27;re using an existing database, you will need to create a db migration for your metadata column to be JSONB and update your queries to use the new operators. </span></span><br><span class="line"><span class="string">  vectorstore = PGVector(</span></span><br><span class="line"><span class="string">2025-08-16 18:59:23 - INFO - ✅ 向量存储和检索器准备就绪</span></span><br><span class="line"><span class="string">2025-08-16 18:59:23 - INFO - ⛓️ 正在构建 RAG 链...</span></span><br><span class="line"><span class="string">2025-08-16 18:59:23 - INFO - ✅ RAG 链构建完成</span></span><br><span class="line"><span class="string">2025-08-16 18:59:23 - INFO - 🌐 准备启动 Gradio Web UI...</span></span><br><span class="line"><span class="string">/root/project/mqtt-rag-project/app.py:147: UserWarning: You have not specified a value for the `type` parameter. Defaulting to the &#x27;</span>tuples<span class="string">&#x27; format for chatbot messages, but this is deprecated and will be removed in a future version of Gradio. Please set type=&#x27;</span>messages<span class="string">&#x27; instead, which uses openai-style dictionaries with &#x27;</span>role<span class="string">&#x27; and &#x27;</span>content<span class="string">&#x27; keys.</span></span><br><span class="line"><span class="string">  chatbot=gr.Chatbot(height=600),</span></span><br><span class="line"><span class="string">/usr/local/lib/python3.11/site-packages/gradio/chat_interface.py:321: UserWarning: The type of the gr.Chatbot does not match the type of the gr.ChatInterface.The type of the gr.ChatInterface, &#x27;</span>messages<span class="string">&#x27;, will be used.</span></span><br><span class="line"><span class="string">  warnings.warn(</span></span><br><span class="line"><span class="string">* Running on local URL:  http://127.0.0.1:7860</span></span><br><span class="line"><span class="string">2025-08-16 18:59:24 - INFO - HTTP Request: GET http://127.0.0.1:7860/gradio_api/startup-events &quot;HTTP/1.1 200 OK&quot;</span></span><br><span class="line"><span class="string">2025-08-16 18:59:24 - INFO - HTTP Request: HEAD http://127.0.0.1:7860/ &quot;HTTP/1.1 200 OK&quot;</span></span><br><span class="line"><span class="string">* To create a public link, set `share=True` in `launch()`.</span></span><br><span class="line"><span class="string">2025-08-16 18:59:26 - INFO - HTTP Request: GET https://api.gradio.app/pkg-version &quot;HTTP/1.1 200 OK&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>服务成功启动了，看下web页面：</p>
+<p><img src="/2025/08/16/RAG%E5%AE%9E%E6%88%98%EF%BC%9A%E7%94%A8LangChain%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%9F%A5%E8%AF%86%E5%BA%93/image-20250816190128801.png" alt="image-20250816190128801"></p>
+<p>现在让我们提问几个MQTT相关的知识点，看下有没有成功检索刚刚创建的知识库，日志里面会详细打印数据。</p>
+<p><img src="/2025/08/16/RAG%E5%AE%9E%E6%88%98%EF%BC%9A%E7%94%A8LangChain%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%9F%A5%E8%AF%86%E5%BA%93/image-20250816190506250.png" alt="image-20250816190506250"></p>
+<p>日志输出：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">2025-08-16 19:04:15 - INFO - HTTP Request: HEAD http://127.0.0.1:7860/ <span class="string">&quot;HTTP/1.1 200 OK&quot;</span></span><br><span class="line">2025-08-16 19:04:15 - INFO - HTTP Request: GET https://api.gradio.app/pkg-version <span class="string">&quot;HTTP/1.1 200 OK&quot;</span></span><br><span class="line">2025-08-16 19:04:24 - INFO - 💬 收到用户新问题: <span class="string">&#x27;mqtt 是什么？&#x27;</span></span><br><span class="line">2025-08-16 19:04:24 - INFO - ✍️ 开始向用户流式传输回答...</span><br><span class="line">2025-08-16 19:04:25 - INFO - HTTP Request: POST https://api.chatanywhere.tech/embeddings <span class="string">&quot;HTTP/1.1 200 OK&quot;</span></span><br><span class="line">2025-08-16 19:04:25 - INFO - 🔍 向量检索完成，找到 10 个相关文档:</span><br><span class="line">2025-08-16 19:04:25 - INFO -   📄 文档 1 (页码: 2): <span class="string">&#x27;Chapter 1: Introduction to MQTT MQTT is a lightweight messaging protocol originally designed for communication in constr...&#x27;</span></span><br><span class="line">2025-08-16 19:04:25 - INFO -   📄 文档 2 (页码: 4): <span class="string">&#x27;While it formerly stood for MQ Telemetry  Transport, where MQ referred to the MQ  Series, a product IBM developed to sup...&#x27;</span></span><br><span class="line">2025-08-16 19:04:25 - INFO -   📄 文档 3 (页码: 4): <span class="string">&#x27;cases. Over the next ten years, IBM used the protocol internally until  they released MQTT 3.1 as a royalty-free version...&#x27;</span></span><br><span class="line">2025-08-16 19:04:25 - INFO -   📄 文档 4 (页码: 4): <span class="string">&#x27;Real-World Applications and Use Cases of  MQTT: An Overview MQTT is used extensively in IoT, Industrial IoT (IIoT), and ...&#x27;</span></span><br><span class="line">2025-08-16 19:04:25 - INFO -   📄 文档 5 (页码: 77): <span class="string">&#x27;managed cloud MQTT broker. Explore them now! MQTT HTTP Full name MQTT (the OASIS standardization  group decided it would...&#x27;</span></span><br><span class="line">2025-08-16 19:04:25 - INFO -   📄 文档 6 (页码: 3): <span class="string">&#x27;Another important aspect of the protocol is that MQTT is  extremely easy to implement on the client side. Ease of use  w...&#x27;</span></span><br><span class="line">2025-08-16 19:04:25 - INFO -   📄 文档 7 (页码: 8): <span class="string">&#x27;established, clients can publish messages to topics  or subscribe to topics to receive messages from other  clients. • K...&#x27;</span></span><br><span class="line">2025-08-16 19:04:25 - INFO -   📄 文档 8 (页码: 20): <span class="string">&#x27;IoT devices. The foundation of this communication is  the MQTT connection, which enables devices to securely  and reliab...&#x27;</span></span><br><span class="line">2025-08-16 19:04:25 - INFO -   📄 文档 9 (页码: 69): <span class="string">&#x27;and brokers. Its Keep Alive mechanism minimizes energy and  bandwidth usage, enabling users to establish cost-effective,...&#x27;</span></span><br><span class="line">2025-08-16 19:04:25 - INFO -   📄 文档 10 (页码: 3): <span class="string">&#x27;MQTT uses a binary message format for communication between clients and servers (brokers). This is in contrast to other ...&#x27;</span></span><br><span class="line">2025-08-16 19:04:27 - INFO - HTTP Request: POST https://api.chatanywhere.tech/chat/completions <span class="string">&quot;HTTP/1.1 200 OK&quot;</span></span><br><span class="line">2025-08-16 19:04:27 - INFO - ✅ 流式传输完成</span><br><span class="line">2025-08-16 19:04:48 - INFO - 💬 收到用户新问题: <span class="string">&#x27;mqtt 有什么优点？&#x27;</span></span><br><span class="line">2025-08-16 19:04:48 - INFO - ✍️ 开始向用户流式传输回答...</span><br><span class="line">2025-08-16 19:04:48 - INFO - HTTP Request: POST https://api.chatanywhere.tech/embeddings <span class="string">&quot;HTTP/1.1 200 OK&quot;</span></span><br><span class="line">2025-08-16 19:04:48 - INFO - 🔍 向量检索完成，找到 10 个相关文档:</span><br><span class="line">2025-08-16 19:04:48 - INFO -   📄 文档 1 (页码: 3): <span class="string">&#x27;Another important aspect of the protocol is that MQTT is  extremely easy to implement on the client side. Ease of use  w...&#x27;</span></span><br><span class="line">2025-08-16 19:04:48 - INFO -   📄 文档 2 (页码: 56): <span class="string">&#x27;protocol more robust and efficient. Who Needs More Client Feedback While Using  MQTT? Over the years, MQTT has become a ...&#x27;</span></span><br><span class="line">2025-08-16 19:04:48 - INFO -   📄 文档 3 (页码: 51): <span class="string">&#x27;IoT Standard With its rich feature set, MQTT 5 has cemented its place  as the go-to choice for diverse IoT use cases, su...&#x27;</span></span><br><span class="line">2025-08-16 19:04:48 - INFO -   📄 文档 4 (页码: 50): <span class="string">&#x27;1. Better Error Handling for More Robust Systems 2. More Scalability for Cloud Native Computing 3. Greater Flexibility a...&#x27;</span></span><br><span class="line">2025-08-16 19:04:48 - INFO -   📄 文档 5 (页码: 51): <span class="string">&#x27;firmware version of the device platform can be added to the  message header, facilitating analysis and processing by the...&#x27;</span></span><br><span class="line">2025-08-16 19:04:48 - INFO -   📄 文档 6 (页码: 50): <span class="string">&#x27;delivered within this time frame, it’s automatically deleted. This  feature is particularly useful in ensuring that netw...&#x27;</span></span><br><span class="line">2025-08-16 19:04:48 - INFO -   📄 文档 7 (页码: 6): <span class="string">&#x27;communication participants all endure in this latest  version. However, several foundational mechanics have  been added ...&#x27;</span></span><br><span class="line">2025-08-16 19:04:48 - INFO -   📄 文档 8 (页码: 3): <span class="string">&#x27;supports persistent sessions between devices and  servers, enhancing message reliability by ensuring  that messages are ...&#x27;</span></span><br><span class="line">2025-08-16 19:04:48 - INFO -   📄 文档 9 (页码: 2): <span class="string">&#x27;Chapter 1: Introduction to MQTT MQTT is a lightweight messaging protocol originally designed for communication in constr...&#x27;</span></span><br><span class="line">2025-08-16 19:04:48 - INFO -   📄 文档 10 (页码: 45): <span class="string">&#x27;objectives for MQTT 5, aimed at enhancing scalability,  formalizing common patterns such as capability discovery and  re...&#x27;</span></span><br><span class="line">2025-08-16 19:04:53 - INFO - HTTP Request: POST https://api.chatanywhere.tech/chat/completions <span class="string">&quot;HTTP/1.1 200 OK&quot;</span></span><br><span class="line">2025-08-16 19:04:54 - INFO - ✅ 流式传输完成</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，回答过程中确实检索了向量数据库。</p>
+<p>到此一个完整RAG项目就完成了！</p>
+<p>🎉🎉🎉</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/langchain/" rel="tag"># langchain</a>
+              <a href="/tags/rag/" rel="tag"># rag</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/" rel="prev" title="深入了解mcp协议">
+      <i class="fa fa-chevron-left"></i> 深入了解mcp协议
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#RAG%E5%AE%9E%E6%88%98%EF%BC%9A%E7%94%A8LangChain%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%9F%A5%E8%AF%86%E5%BA%93"><span class="nav-number">1.</span> <span class="nav-text">RAG实战：用LangChain快速搭建个人知识库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">2.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%83%8C%E6%99%AF%E7%9F%A5%E8%AF%86"><span class="nav-number">3.</span> <span class="nav-text">背景知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RAG-%E7%AE%80%E4%BB%8B"><span class="nav-number">3.1.</span> <span class="nav-text">RAG 简介</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="nav-number">4.</span> <span class="nav-text">环境准备</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%88%E5%86%B3%E6%9D%A1%E4%BB%B6"><span class="nav-number">4.1.</span> <span class="nav-text">先决条件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E4%BE%9D%E8%B5%96%E9%A1%B9"><span class="nav-number">4.2.</span> <span class="nav-text">核心依赖项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%EF%BC%9A"><span class="nav-number">4.3.</span> <span class="nav-text">项目结构：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pgvector%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93-docker%E5%AE%89%E8%A3%85"><span class="nav-number">4.4.</span> <span class="nav-text">pgvector向量数据库 docker安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#start-pgvector-sh"><span class="nav-number">4.4.1.</span> <span class="nav-text">start-pgvector.sh :</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pgadmin-%E5%AE%89%E8%A3%85%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%89"><span class="nav-number">4.5.</span> <span class="nav-text">pgadmin 安装（可选）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%86%E8%8A%82%EF%BC%9A"><span class="nav-number">5.</span> <span class="nav-text">项目细节：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E6%B5%81%E7%A8%8B%EF%BC%9A"><span class="nav-number">5.1.</span> <span class="nav-text">整体流程：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#env-%EF%BC%88%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%EF%BC%89"><span class="nav-number">5.2.</span> <span class="nav-text">.env （环境变量）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hivemq-ebook-mqtt-essentials-pdf-MQTT%E7%9B%B8%E5%85%B3%E7%9A%84%E4%B9%A6%E7%B1%8D"><span class="nav-number">5.3.</span> <span class="nav-text">hivemq-ebook-mqtt-essentials.pdf(MQTT相关的书籍)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ingest-py-%E6%95%B0%E6%8D%AE%E5%85%A5%E5%BA%93%E8%84%9A%E6%9C%AC"><span class="nav-number">5.4.</span> <span class="nav-text">ingest.py (数据入库脚本)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%90%91%E9%87%8F%EF%BC%9A"><span class="nav-number">5.4.1.</span> <span class="nav-text">数据库向量：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#app-py-Web%E5%BA%94%E7%94%A8%E4%B8%8E%E9%97%AE%E7%AD%94%E6%9C%8D%E5%8A%A1"><span class="nav-number">5.5.</span> <span class="nav-text">app.py (Web应用与问答服务)</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">penggewu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">penggewu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@9/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'default',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+</body>
+</html>
