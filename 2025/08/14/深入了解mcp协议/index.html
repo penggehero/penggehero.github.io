@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"penggehero.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9256612801953386"
+     crossorigin="anonymous"></script>
+
+  <meta name="description" content="[TOC] 1. MCP技术1.1 MCP是什么MCP （Model Context Protocol，模型上下文协议）是一个标准化协议，定义了应用程序和 AI 模型之间交换上下文信息的方式。这使得开发者能够以一致的方式将各种数据源、工具和功能连接到 AI 模型（一个中间协议层），就像 USB-C 让不同设备能够通过相同的接口连接一样。MCP 的目标是创建一个通用标准，使 AI 应用程序的开发和集">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入了解mcp协议">
+<meta property="og:url" content="https://penggehero.github.io/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/index.html">
+<meta property="og:site_name" content="云泽的博客">
+<meta property="og:description" content="[TOC] 1. MCP技术1.1 MCP是什么MCP （Model Context Protocol，模型上下文协议）是一个标准化协议，定义了应用程序和 AI 模型之间交换上下文信息的方式。这使得开发者能够以一致的方式将各种数据源、工具和功能连接到 AI 模型（一个中间协议层），就像 USB-C 让不同设备能够通过相同的接口连接一样。MCP 的目标是创建一个通用标准，使 AI 应用程序的开发和集">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://penggehero.github.io/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640.gif">
+<meta property="og:image" content="https://penggehero.github.io/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156942268-60.webp">
+<meta property="og:image" content="https://penggehero.github.io/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156942268-61.webp">
+<meta property="og:image" content="https://penggehero.github.io/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156279646-3.webp">
+<meta property="og:image" content="https://penggehero.github.io/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534813-6.webp">
+<meta property="og:image" content="https://penggehero.github.io/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534814-7.webp">
+<meta property="og:image" content="https://penggehero.github.io/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534814-8.webp">
+<meta property="og:image" content="https://penggehero.github.io/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534814-9.webp">
+<meta property="og:image" content="https://penggehero.github.io/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534814-10.gif">
+<meta property="og:image" content="https://penggehero.github.io/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534814-11.webp">
+<meta property="og:image" content="https://penggehero.github.io/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534814-12.webp">
+<meta property="og:image" content="https://penggehero.github.io/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534814-13.webp">
+<meta property="og:image" content="https://penggehero.github.io/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534814-14.webp">
+<meta property="og:image" content="https://penggehero.github.io/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534814-15.webp">
+<meta property="og:image" content="https://penggehero.github.io/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156766459-57.webp">
+<meta property="og:image" content="https://penggehero.github.io/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534815-16.webp">
+<meta property="og:image" content="https://penggehero.github.io/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534815-17.png">
+<meta property="og:image" content="https://penggehero.github.io/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534815-18.webp">
+<meta property="og:image" content="https://penggehero.github.io/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534815-19.png">
+<meta property="og:image" content="https://penggehero.github.io/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534815-20.webp">
+<meta property="og:image" content="https://penggehero.github.io/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534815-21.webp">
+<meta property="og:image" content="https://penggehero.github.io/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534815-22.webp">
+<meta property="article:published_time" content="2025-08-14T07:18:11.000Z">
+<meta property="article:modified_time" content="2025-08-15T02:10:23.587Z">
+<meta property="article:author" content="penggewu">
+<meta property="article:tag" content="golang">
+<meta property="article:tag" content="mcp">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://penggehero.github.io/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640.gif">
+
+<link rel="canonical" href="https://penggehero.github.io/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>深入了解mcp协议 | 云泽的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">云泽的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://penggehero.github.io/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="penggewu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="云泽的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          深入了解mcp协议
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-08-14 15:18:11" itemprop="dateCreated datePublished" datetime="2025-08-14T15:18:11+08:00">2025-08-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-08-15 10:10:23" itemprop="dateModified" datetime="2025-08-15T10:10:23+08:00">2025-08-15</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>[TOC]</p>
+<h1 id="1-MCP技术"><a href="#1-MCP技术" class="headerlink" title="1. MCP技术"></a>1. MCP技术</h1><h2 id="1-1-MCP是什么"><a href="#1-1-MCP是什么" class="headerlink" title="1.1 MCP是什么"></a>1.1 MCP是什么</h2><p>MCP （Model Context Protocol，模型上下文协议）是一个标准化协议，定义了应用程序和 AI 模型之间交换上下文信息的方式。这使得开发者能够以一致的方式将各种数据源、工具和功能连接到 AI 模型（一个中间协议层），就像 USB-C 让不同设备能够通过相同的接口连接一样。MCP 的目标是<strong>创建一个通用标准，使 AI 应用程序的开发和集成变得更加简单和统一</strong>。</p>
+<p>MCP是由人工智能公司 <strong>Anthropic</strong> 于 <strong>2024 年 11 月 24 日</strong>正式发布并开源的协议标准。Anthropic 公司是由前 OpenAI 核心人员成立的人工智能公司，其发布的 Claude 系列模型是为数较少的可以和 GPT 系列抗衡的模型。</p>
+<p><img src="/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640.gif" alt="图片"></p>
+<h2 id="1-2-为什么需要-MCP"><a href="#1-2-为什么需要-MCP" class="headerlink" title="1.2 为什么需要 MCP"></a>1.2 为什么需要 MCP</h2><p>MCP 协议旨在解决大型语言模型（LLM）与外部数据源、工具间的集成难题，被比喻为“AI应用的USB-C接口“。通过标准化通信协议，将传统的“M×N集成问题”（即多个模型与多个数据源的点对点连接）转化为“M+N模式”，大幅降低开发成本。</p>
+<p><img src="/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156942268-60.webp" alt="图片"></p>
+<p>在 MCP 协议没有推出之前：</p>
+<ol>
+<li>智能体开发平台需要单独的插件配置和插件执行模型，以屏蔽不通工具之间的协议差异，提供统一的接口给 Agent 使用；</li>
+<li>开发者如果要增加自定义的工具，需要按照平台规定的 http 协议实现工具。并且不同的平台之间的协议可能不同；</li>
+<li>“M×N 问题”：每新增一个工具或模型，需重新开发全套接口，导致开发成本激增、系统脆弱；</li>
+<li>功能割裂：AI 模型无法跨工具协作（如同时操作 Excel 和数据库），用户需手动切换平台。</li>
+</ol>
+<p>没有标准，整个行业生态很难有大的发展，所以 MCP 作为一种标准的出现，是 AI 发展的必然需求。</p>
+<p>总结：MCP 如何重塑 AI 范式：</p>
+<p><img src="/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156942268-61.webp" alt="图片"></p>
+<h2 id="1-3-MPC核心组件"><a href="#1-3-MPC核心组件" class="headerlink" title="1.3 MPC核心组件"></a>1.3 MPC核心组件</h2><p>如上图所示，在MCP架构体系中，包含MCP Server、MCP Client和MCP Host几个核心组件，及组件间交互协议。</p>
+<h3 id="1-3-1-MCP-Server"><a href="#1-3-1-MCP-Server" class="headerlink" title="1.3.1 MCP Server"></a>1.3.1 MCP Server</h3><p>MCP Server是一个通过MCP协议实现对外提供服务的轻量级应用，它对外提供工具执行、资源访问、预定义Prompt等一系列资源。</p>
+<ul>
+<li>资源（Resources）：类似文件的数据，可以被客户端读取，如 API 响应或文件内容</li>
+<li>工具（Tools）：可以被 LLM 调用的函数 </li>
+<li>提示（Prompts）：预先编写的模板，帮助用户完成特定任务</li>
+</ul>
+<p>下面是一个<a target="_blank" rel="noopener" href="https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem">文件系统操作</a>的MCP Server示例，它提供了对文件、目录的读写操作。</p>
+<p><img src="/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156279646-3.webp" alt="图片"></p>
+<h3 id="1-3-2-MCP-Client"><a href="#1-3-2-MCP-Client" class="headerlink" title="1.3.2 MCP Client"></a>1.3.2 MCP Client</h3><p>在Host应用内部，MCP Client 与 MCP server 保持 1:1 的连接。MCP Client 充当 LLM 和 MCP Server 之间的桥梁。简单理解就是MCP Client SDK，用于实现Host应用使其能够与MCP Server交互。</p>
+<h3 id="1-3-3-MCP-Host"><a href="#1-3-3-MCP-Host" class="headerlink" title="1.3.3 MCP Host"></a>1.3.3 MCP Host</h3><p>发起请求的 LLM 应用程序（例如 Claude Desktop、IDE 或 AI 工具）。通常像Claude Desktop 和Cursor这类智能助手应用和IDE，它们都是MCP Host应用，通过MCP client来连接某个MCP Server，并调用其提供的工具。</p>
+<p>另外值得注意的是，<strong>运行MCP Host应用所在的主机也属于MCP Host的一部分，主机的文件系统、浏览器等都可能成为MCP Server在运行时操作的对象。</strong></p>
+<h2 id="1-4-通信协议"><a href="#1-4-通信协议" class="headerlink" title="1.4 通信协议"></a>1.4 通信协议</h2><p>MCP采用JSON-RPC来编码消息，在Sever和Client之间通过标准输入输出和Streamable HTTP进行消息交换。</p>
+<h3 id="1-4-1-Standard-Input-Output-stdio"><a href="#1-4-1-Standard-Input-Output-stdio" class="headerlink" title="1.4.1 Standard Input&#x2F;Output (stdio)"></a>1.4.1 Standard Input&#x2F;Output (stdio)</h3><p>采用标准输入&#x2F;输出流进行传输，适用于在同一台机器上运行的客户端和服务器之间的通信。</p>
+<p><strong>Server</strong></p>
+<p><img src="/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534813-6.webp" alt="图片"></p>
+<p><strong>Client</strong></p>
+<p><img src="/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534814-7.webp" alt="图片"></p>
+<h3 id="1-4-2-Server-Sent-Events-SSE"><a href="#1-4-2-Server-Sent-Events-SSE" class="headerlink" title="1.4.2 Server-Sent Events (SSE)"></a>1.4.2 Server-Sent Events (SSE)</h3><p>远程通信**：**利用 SSE 与 HTTP 结合，实现跨网络的实时数据传输，适用于需要访问远程资源或分布式部署的场景。</p>
+<p><strong>Server</strong></p>
+<p><img src="/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534814-8.webp" alt="图片"></p>
+<p><strong>Client</strong></p>
+<p><img src="/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534814-9.webp" alt="图片"></p>
+<h3 id="1-4-3-Streamable-HTTP"><a href="#1-4-3-Streamable-HTTP" class="headerlink" title="1.4.3 Streamable HTTP"></a>1.4.3 Streamable HTTP</h3><p>2025 年 3 月 26 日，MCP 引入了一项关键更新：用 Streamable HTTP 替代原先的 HTTP + SSE 作为默认传输方式。<br>这一变更在解决原有方案中连接不可恢复、服务端长连接压力大等问题的同时，依然保留了 SSE 带来的流式响应优势。</p>
+<h4 id="HTTP-SSE-的缺陷"><a href="#HTTP-SSE-的缺陷" class="headerlink" title="HTTP + SSE 的缺陷"></a><strong>HTTP + SSE 的缺陷</strong></h4><p>远程 <code>MCP</code> 通过 <code>HTTP + SSE</code> 的传输方式工作，存在以下问题，这也是它所被替换的根本原因：</p>
+<ul>
+<li><p>不支持恢复连接</p>
+</li>
+<li><p>要求服务器保持高可用的长连接</p>
+</li>
+<li><p>服务器只能通过 <code>SSE</code> 发送消息</p>
+</li>
+</ul>
+<h4 id="不支持恢复连接"><a href="#不支持恢复连接" class="headerlink" title="不支持恢复连接"></a><strong>不支持恢复连接</strong></h4><p>如果客户端和服务器之间的 <code>SSE</code> 连接中断了，就无法 “从端点继续”，只能重新开始新的连接，之前的上下文可能会丢失。</p>
+<h4 id="要求服务器保持高可用的长连接"><a href="#要求服务器保持高可用的长连接" class="headerlink" title="要求服务器保持高可用的长连接"></a><strong>要求服务器保持高可用的长连接</strong></h4><p>服务器必须一直保持一个稳定、不中断的 <code>SSE</code> 长连接，否则通信就中断。</p>
+<h4 id="服务器只能通过-SSE-发送消息"><a href="#服务器只能通过-SSE-发送消息" class="headerlink" title="服务器只能通过 SSE 发送消息"></a><strong>服务器只能通过 <code>SSE</code> 发送消息</strong></h4><p>服务器无法在已有的请求之外，主动地发送消息给客户端，除了通过专门的 &#x2F;sse 通道。换句话说，它是“单向被动响应”，而不是“任意时机推送”。</p>
+<h4 id="Streamable-HTTP"><a href="#Streamable-HTTP" class="headerlink" title="Streamable HTTP"></a>Streamable HTTP</h4><p><code>Streamable HTTP</code> 并不是传统意义上的 <strong>流式 HTTP</strong>（<code>Streaming HTTP</code>），它指的是一种 <strong>兼具以下特性的传输机制</strong>：</p>
+<ul>
+<li>以普通 <code>HTTP</code> 请求为基础，客户端用 <code>POST/GET</code> 发请求；</li>
+<li>服务器可选地将响应升级为 <code>SSE</code> 流，实现 <strong>流式传输</strong> 的能力（当需要时）；</li>
+<li>去中心化、无强制要求持续连接，支持 <code>stateless</code> 模式；</li>
+<li>客户端和服务端之间的消息传输更加灵活，比如同一个 <code>/message</code> 端点可用于发起请求和接收 <code>SSE</code> 流；</li>
+<li>不再需要单独的 <code>/sse</code> 端点，一切通过统一的 <code>/message</code> 协议层处理。</li>
+</ul>
+<h4 id="Streamable-HTTP-的优势"><a href="#Streamable-HTTP-的优势" class="headerlink" title="Streamable HTTP 的优势"></a>Streamable HTTP 的优势</h4><ul>
+<li>支持无状态服务器：无需维持高可用的长连接</li>
+<li>纯 <code>HTTP</code> 实现：<code>MCP</code> 可在纯 <code>HTTP</code> 服务中实现，无需 <code>SSE</code> 支持</li>
+<li>兼容基础设施：因为 “只是 HTTP”，可以与中间件和现有基础设施良好集成</li>
+<li>向后兼容：是当前 <code>HTTP+SSE</code> 传输方式的渐进式改进</li>
+<li>灵活的传输方式：服务器可选择是否使用 <code>SSE</code> 进行流式响应</li>
+</ul>
+<h4 id="从-HTTP-SSE-到-Streamable-HTTP-的变化"><a href="#从-HTTP-SSE-到-Streamable-HTTP-的变化" class="headerlink" title="从 HTTP+SSE 到 Streamable HTTP 的变化"></a>从 HTTP+SSE 到 Streamable HTTP 的变化</h4><ul>
+<li>移除了 <code>/sse</code> 端点</li>
+<li>所有客户端 → 服务端的消息都通过 <code>/message</code>（或类似端点）发送</li>
+<li>所有客户端 → 服务端的请求都可以被服务器升级为 <code>SSE</code>，以发送通知或请求</li>
+<li>服务器可以选择建立会话 <code>ID</code> 以维护状态</li>
+<li>客户端可以通过对 <code>/message</code> 发送一个空的 <code>GET</code> 请求启动 <code>SSE</code> 流</li>
+<li>该方法兼容旧版本的实现，并允许服务器保持无状态（如果有需要）</li>
+</ul>
+<h4 id="为什么不用-WebSocket？"><a href="#为什么不用-WebSocket？" class="headerlink" title="为什么不用 WebSocket？"></a>为什么不用 WebSocket？</h4><p>官方团队曾认真探讨过是否应该将 <code>WebSocket</code> 作为远程通信的主要方式，并尝试在其基础上实现断线重连等功能。但最终决定暂时不采用 <code>WebSocket</code>，主要原因如下：</p>
+<ul>
+<li>想要以 <code>RPC</code> 风格使用 <code>MCP</code>（例如构建一个无状态、只暴露基础工具的服务）时，如果每次调用都依赖 <code>WebSocket</code>，将引入不必要的维护和网络开销。</li>
+<li>在浏览器环境中，<code>WebSocket</code> 连接无法像普通 <code>HTTP</code> 请求那样附加请求头（比如 <code>Authorization</code>），而且不同于 <code>SSE</code>，<code>WebSocket</code> 在浏览器中也无法由第三方库完全“模拟”实现。</li>
+<li>只有 <code>GET</code> 请求可以自动升级为 <code>WebSocket</code>，而 <code>POST</code> 等其他 <code>HTTP</code> 方法并不支持直接升级。这就意味着如果要让 <code>POST</code> 请求使用 <code>WebSocket</code>，需要一个额外的 <strong>两步升级</strong> 过程，增加了实现的复杂度和延迟。</li>
+<li>也避免在 <code>MCP</code> 规范中增加 <code>WebSocket</code> 的可选支持，以减少客户端与服务器间可能的兼容性组合问题（但不阻止社区自己扩展非官方的 <code>WebSocket</code> 实现）</li>
+<li>官方也有意避免在 <code>MCP</code> 协议中引入 <code>WebSocket</code> 作为官方选项，以避免客户端和服务器之间因传输方式组合过多而导致的兼容性问题（当然，这并不妨碍用户基于 <code>WebSocket</code> 自行实现非官方版本）。</li>
+</ul>
+<p>当然，如果将来实践中发现 <code>SSE</code> 并不理想，官方仍会考虑重新评估 <code>WebSocket</code> 的可能性。</p>
+<h4 id="MCP-Server-示例"><a href="#MCP-Server-示例" class="headerlink" title="MCP Server 示例"></a>MCP Server 示例</h4><h4 id="无状态服务器（Stateless-Server）"><a href="#无状态服务器（Stateless-Server）" class="headerlink" title="无状态服务器（Stateless Server）"></a>无状态服务器（Stateless Server）</h4><p><code>Streamable HTTP</code> 支持构建完全无状态、无需保持长连接的服务器架构。</p>
+<p>以一个仅提供大语言模型（<code>LLM</code>）工具的服务为例，不依赖其他高级功能，可以按以下方式实现：</p>
+<ul>
+<li>始终响应初始化请求，但无需持久化任何状态；</li>
+<li>对所有传入的 <code>ToolListRequest</code>，直接返回一个标准的 <code>JSON-RPC</code> 响应；</li>
+<li>对 <code>CallToolRequest</code>，执行对应工具，等待其完成后，将结果通过 <code>HTTP</code> 响应体以 <code>CallToolResponse</code> 的形式返回。</li>
+</ul>
+<h4 id="支持流式输出的无状态服务器（Stateless-Server-with-Streaming）"><a href="#支持流式输出的无状态服务器（Stateless-Server-with-Streaming）" class="headerlink" title="支持流式输出的无状态服务器（Stateless Server with Streaming）"></a>支持流式输出的无状态服务器（Stateless Server with Streaming）</h4><p>即使服务器完全无状态、且不支持长连接，也仍然可以利用此设计进行流式响应。</p>
+<p>以工具调用时的进度反馈为例：</p>
+<ul>
+<li>当收到 <code>POST</code> 的 <code>CallToolRequest</code> 时，服务器通过响应头声明该响应将以 <code>SSE</code>（<code>Server-Sent Events</code>）格式返回；</li>
+<li>启动工具执行逻辑；</li>
+<li>在执行过程中，服务器可以通过 <code>SSE</code> 向客户端持续发送多个 <code>ProgressNotification</code>（进度通知）；</li>
+<li>执行完成后，服务器通过 <code>SSE</code> 发送最终的 <code>CallToolResponse</code>；</li>
+<li>最后，服务器关闭 <code>SSE</code> 流，整个交互完成。</li>
+</ul>
+<h4 id="有状态服务器（Stateful-Server）"><a href="#有状态服务器（Stateful-Server）" class="headerlink" title="有状态服务器（Stateful Server）"></a>有状态服务器（Stateful Server）</h4><p>对于需要维护客户端会话的服务器，整体架构可以保持与 <code>http+SSE</code> 的实现类似。</p>
+<p>主要区别在于：服务器需要为客户端生成唯一的会话 <code>ID</code>，并要求客户端在后续所有请求中携带该 <code>ID</code>。</p>
+<p>服务器可以利用会话 <code>ID</code> 实现 <strong>粘性路由</strong> 或消息总线中的会话定位。例如，在水平扩展的部署中（部署多台相同的 <code>mcp server</code>），某个 <code>POST</code> 请求可能被路由到任意一个节点，此时可以通过 <code>Redis</code> 等中间件将请求路由到关联的会话上下文，确保状态一致性。</p>
+<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p><code>Streamable HTTP</code> 是对 <code>MCP</code> 协议传输层的一次重要优化。它在保留原有 <code>HTTP + SSE</code> 模式优势的基础上，解决了连接不可恢复、长连接负担重、传输不灵活等问题，带来了更高的可用性与灵活性。</p>
+<h3 id="1-4-4-模式总结"><a href="#1-4-4-模式总结" class="headerlink" title="1.4.4 模式总结"></a>1.4.4 模式总结</h3><p>MCP支持了三种通信方式：<strong>Stdio</strong>、<strong>SSE</strong>、<strong>Streamable HTTP</strong></p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>Stdio</th>
+<th>SSE</th>
+<th><strong>Streamable HTTP</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>通信方向</td>
+<td>双向（仅限本地）</td>
+<td>单向（服务器到客户端）</td>
+<td>双向（支持复杂交互）</td>
+</tr>
+<tr>
+<td>使用场景</td>
+<td>本地进程间通信</td>
+<td>实时数据推送</td>
+<td>跨服务、分布式系统、高并发场景</td>
+</tr>
+<tr>
+<td>支持并发连接数</td>
+<td>低</td>
+<td>中等</td>
+<td>高（适合大规模并发）</td>
+</tr>
+<tr>
+<td>适应性</td>
+<td>局限于本地环境</td>
+<td>支持浏览器，但单向通信</td>
+<td>高灵活性，支持流式数据与批处理</td>
+</tr>
+<tr>
+<td>协议基础</td>
+<td>标准输入输出（stdin&#x2F;stdout）</td>
+<td>HTTP协议（Server-Sent Events）</td>
+<td>HTTP协议（双向流式传输）</td>
+</tr>
+</tbody></table>
+<h2 id="1-5-MCP协议带来的改变"><a href="#1-5-MCP协议带来的改变" class="headerlink" title="1.5 MCP协议带来的改变"></a>1.5 MCP协议带来的改变</h2><p>在使用MCP协议之前，开发智能应用的开发者（如Cursor）如果要使用外部服务的能力，每个应用开发需要各自开发对接外部服务的程序来实现能力集成。使用MCP后，服务提供者（如Slack、Google Drive）会以MCP标准协议对外提供MCP Server，服务的工具和资源将统一汇聚到市场上，应用以标准化的接口对接资源和工具，从而提升资源和工具的标准化和复用率。</p>
+<p><img src="/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534814-10.gif" alt="图片"></p>
+<h2 id="1-6-MCP-的发展情况"><a href="#1-6-MCP-的发展情况" class="headerlink" title="1.6 MCP 的发展情况"></a>1.6 <strong>MCP 的发展情况</strong></h2><p>MCP 自 **2024 年 11 月 24 日 发布以来，<strong>OpenAI、Google、微软、腾讯、阿里、百度等头部企业纷纷接入 MCP，推动其成为</strong>事实性行业标准。<strong>并且相继出现了 <a target="_blank" rel="noopener" href="https://mcp.so/">mcp.so</a> 、<a target="_blank" rel="noopener" href="https://mcpmarket.cn/">mcpmarket</a> 等超大体量的 MCP 服务提供商。国内的头部企业也相继加入 MCP 服务商的竞争中，百度发布了<a target="_blank" rel="noopener" href="https://sai.baidu.com/mcp?ref=openi.cn">千帆 MCP 广场</a></strong>，**阿里发布了<a target="_blank" rel="noopener" href="https://www.modelscope.cn/mcp?category=research-and-data&page=1">魔搭 MCP 广场</a>。在如此庞大的 MCP 市场下，开发者基本不需要开发自己的插件，直接使用 MCP 服务商的插件就可以直接开发大量 Agent。</p>
+<p>同时很多头部企业，开始把自身原有的 API 业务开发成封装成 MCP 服务对外提供。比如</p>
+<ol>
+<li>GitHub Copilot 提供 MCP 的方式生成代码；</li>
+<li>AWS 2025 年 6月推出开源工具 Amazon Serverless MCP Server**，**支持 Agent 直接操作云上资源，进行服务编排。</li>
+<li>腾讯地图、高德地图、百度地图均发布 MCP Server，支持在 Agent 中使用丰富的地图资源。</li>
+<li>腾讯云COS、阿里云OSS、百度网盘均已支持 MCP 协议的接入。</li>
+</ol>
+<p><strong>未来趋势</strong>：</p>
+<ul>
+<li><strong>与 AIOS 融合</strong>：MCP 正成为 AI 操作系统（如华为鸿蒙 HMAF）的核心组件，实现跨设备智能调度；</li>
+<li><strong>生态挑战</strong>：大厂通过 MCP 构建“闭环生态”（如阿里集成高德地图），可能引发协议割裂，需推动跨平台协作标准。</li>
+</ul>
+<p>MCP 不仅是技术协议，更是 <strong>AI 生产力革命的基石</strong>——它让模型真正融入现实世界，成为人类工作的无缝延伸。</p>
+<h1 id="2-MCP执行细节"><a href="#2-MCP执行细节" class="headerlink" title="2. MCP执行细节"></a>2. MCP执行细节</h1><p>当用户在Host应用中输入一个Query后，Host应用是如何在LLM, MCP Client和MCP Server之间交互的呢？下图描述了Query请求处理的完整流程：</p>
+<p><img src="/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534814-11.webp" alt="图片"></p>
+<ol>
+<li>MCP Client首先从MCP Server获取可用的工具列表；</li>
+<li>将用户的Query连同工具描述通过Function Calling一起发送给 LLM；</li>
+<li>LLM 决定是否需要使用工具以及使用哪些工具；</li>
+<li>如果需要使用工具，MCP Client会通过 MCP Server执行相应的工具调用；</li>
+<li>工具调用的结果会被发送回LLM；</li>
+<li>LLM基于所有信息生成自然语言响应；</li>
+<li>最后将响应展示给用户。</li>
+</ol>
+<h2 id="2-1-Host调用LLM"><a href="#2-1-Host调用LLM" class="headerlink" title="2.1 Host调用LLM"></a>2.1 Host调用LLM</h2><p>Host将用户Query和Tools一起发给LLM。</p>
+<p><img src="/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534814-12.webp" alt="图片"></p>
+<h2 id="2-2-Client调用MCP-Server"><a href="#2-2-Client调用MCP-Server" class="headerlink" title="2.2 Client调用MCP Server"></a>2.2 Client调用MCP Server</h2><p>大模型通过Query和提供的工具进行推理，确定完成用户任务需要执行的工具，如果LLM返回结果中如果需要执行tool_calls，则在会话中调用MCP Server。</p>
+<p><img src="/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534814-13.webp" alt="图片"></p>
+<h2 id="2-3-返回最终处理结果"><a href="#2-3-返回最终处理结果" class="headerlink" title="2.3 返回最终处理结果"></a>2.3 返回最终处理结果</h2><p>Host将MCP Server执行的结果和Message一并发给LLM，如果不需要再调用其他工具，那么调用LLM做最后润色后返回最终结果。</p>
+<p><img src="/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534814-14.webp" alt="图片"></p>
+<h1 id="3-Agent-Function-Calling与MCP"><a href="#3-Agent-Function-Calling与MCP" class="headerlink" title="3. Agent, Function Calling与MCP"></a>3. Agent, Function Calling与MCP</h1><h2 id="3-1-Agent"><a href="#3-1-Agent" class="headerlink" title="3.1 Agent"></a>3.1 Agent</h2><p>LLM Agents是专为生成需要推理和执行任务的高级人工智能系统。它们能够通过推理思考、回忆过往对话，并通过调用外部工具，根据上下文和用户要求动态规划和执行任务，最终自动完成用户问题。</p>
+<p><img src="/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534814-15.webp" alt="图片"></p>
+<p>形象来讲，LLM是一个强大的文本处理大脑，但其本身不具备执行任务的能力，因此需要借助工具，使其能够调用外部工具和服务，从而代理人工完成复杂任务的规划和执行。</p>
+<h2 id="3-2-Function-Calling"><a href="#3-2-Function-Calling" class="headerlink" title="3.2 Function Calling"></a>3.2 Function Calling</h2><p><strong>Function Calling（函数调用）</strong> 是大型语言模型的关键技术。前面有提到过 <strong>RAG技术</strong> 是为了解决模型无法和外接数据交互的问题，但是 <strong>RAG</strong> 的局限在于只赋予了模型检索数据的能力，而 <strong>Function Calling</strong> 允许模型理解用户请求中的潜在意图，并自动生成结构化参数来调用外部<strong>任何</strong>函数&#x2F;工具，从而突破纯文本生成的限制，实现与真实世界的交互，比如可以调用查天气、发邮件、数学计算等工具。</p>
+<p>Function Call 模型最早由 OpenAI 在 2023 年 6 月 13 正式提出并发布，首次在 GPT-4 模型上实现了 Function Calling 能力。OpenAI 作为大语言模型的领路人，其发布的模型的 API 协议都会行业标准，后面国内外新发布模型都会按照 OpenAI 的协议作为标准实现。截止目前，支持 Fucntion Calling 能力的主流模型如下表：</p>
+<p><img src="/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156766459-57.webp" alt="图片"></p>
+<p>除了上面的知名度高的模型，还有一些其他开源或闭源模型也支持了 Fucntion Calling 能力，但是截止目前为止，GPT-4 仍然是公认的 Fucntion Calling 能力最强的模型。</p>
+<p><a target="_blank" rel="noopener" href="https://platform.openai.com/docs/guides/function-calling">OpenAI最初通过Function Calling</a>来给大模型装上“手脚”，让其能够调用外部工具和服务，从而代理人工完成复杂任务的规划和执行。</p>
+<p>通过精妙的Prompt设计，可以让模型根据用户Query和可用的Function描述来进行任务分解和推理，从而选择合适的工具进行执行，并通过多次迭代完成用户任务。</p>
+<p><img src="/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534815-16.webp" alt="图片"></p>
+<h2 id="3-3-MCP"><a href="#3-3-MCP" class="headerlink" title="3.3 MCP"></a>3.3 MCP</h2><p>Function Calling的问题显而易见，对于Function的描述各厂商存在差异，模型迁移成本高；另外Fucntion Call存在效果不稳定、容错性低等问题。而MCP标准化了Agent与外部资源和工具交互的接口、协议及实现。从而为构建更为健壮的Agent应用和推动生态的协作起到了关键作用。</p>
+<h2 id="3-4-对比"><a href="#3-4-对比" class="headerlink" title="3.4 对比"></a>3.4 对比</h2><p><img src="/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534815-17.png" alt="图片"></p>
+<h1 id="4-MCP技术生态"><a href="#4-MCP技术生态" class="headerlink" title="4. MCP技术生态"></a>4. MCP技术生态</h1><p>随着<a target="_blank" rel="noopener" href="https://manus.im/">Manus</a>的发布，MCP协议得以快速普及，MCP应用、MCP Server服务以及MCP应用市场的蓬勃发展，使得MCP技术生态迅速繁荣起来。</p>
+<p><img src="/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534815-18.webp" alt="图片"></p>
+<h2 id="4-1-MCP-Server-Marketplace"><a href="#4-1-MCP-Server-Marketplace" class="headerlink" title="4.1 MCP Server Marketplace"></a>4.1 MCP Server Marketplace</h2><p>几个主要的MCP Server Marketplace上Host的MCP Server数量在短短20天内（2025&#x2F;3&#x2F;28 - 2025&#x2F;4&#x2F;18）有了大幅的增长。这进一步说明了其技术生态的繁荣程度。</p>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>MCP Marketplace</strong></th>
+<th align="left">*<em>发布MCP Server数量*</em>*<em>3&#x2F;28 - 4&#x2F;18</em>*</th>
+<th align="left"><strong>类型</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://smithery.ai/">Smithery</a></td>
+<td align="left">2978 - 4792</td>
+<td align="left">综合MCP资源</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://mcp.so/">mcp.so</a></td>
+<td align="left">4831 - 8990</td>
+<td align="left">综合MCP资源</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.pulsemcp.com/">PulseMCP</a></td>
+<td align="left">3189 - 3864</td>
+<td align="left">综合MCP资源</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://cursor.directory/">Cursor Directory</a></td>
+<td align="left">1800+</td>
+<td align="left">Cursor生态，专注代码开发场景</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://glama.ai/mcp/servers">Glama</a></td>
+<td align="left">3390 - 3640</td>
+<td align="left">跨模型协作的场景</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://github.com/modelcontextprotocol/servers">modelcontextprotocol</a></td>
+<td align="left">331</td>
+<td align="left">Anthropic官方热门 MCP Server 源码</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://cline.bot/mcp-marketplace">Cline</a></td>
+<td align="left">90</td>
+<td align="left">VSCode插件市场</td>
+</tr>
+</tbody></table>
+<h2 id="4-2-MCP应用程序"><a href="#4-2-MCP应用程序" class="headerlink" title="4.2 MCP应用程序"></a>4.2 MCP应用程序</h2><p>我们可以在<a target="_blank" rel="noopener" href="https://www.pulsemcp.com/clients">PulseMCP</a>上看到200多个应用支持了MCP，你可以在上面找到适合自己的MCP应用。</p>
+<p><img src="/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534815-19.png" alt="图片"></p>
+<h2 id="4-3-MCP-Server"><a href="#4-3-MCP-Server" class="headerlink" title="4.3 MCP Server"></a>4.3 MCP Server</h2><p>以<a target="_blank" rel="noopener" href="https://mcp.so/categories">mcp.so</a>上的MCP Server目录为例，我们看到MCP Server的范围已经涵盖数据、研究、云平台、数据库、Chatbot、文件系统、自动化等多个领域。</p>
+<p><img src="/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534815-20.webp" alt="图片"></p>
+<p>除此之外，在开发者支持方面，除了官方的SDK以外，<a target="_blank" rel="noopener" href="https://github.com/jlowin/fastmcp">FastMCP</a>、<a target="_blank" rel="noopener" href="https://docs.spring.io/spring-ai/reference/api/mcp/mcp-overview.html">Spring AI</a>、<a target="_blank" rel="noopener" href="https://github.com/lastmile-ai/mcp-agent">mcp-agent</a>等技术框架也进一步降低了MCP的开发成本。</p>
+<h1 id="5-对MCP发展的思考"><a href="#5-对MCP发展的思考" class="headerlink" title="5. 对MCP发展的思考"></a>5. 对MCP发展的思考</h1><p>作为一个新兴的技术规范，我们应该以审慎而积极的态度来看待，以下是个人对MCP可能带来的变化和其局限的分析判断。</p>
+<h2 id="5-1-MCP带来的变化"><a href="#5-1-MCP带来的变化" class="headerlink" title="5.1 MCP带来的变化"></a>5.1 MCP带来的变化</h2><p>正如WebService和WSDL定义了系统间服务调用的基本协议，推动了SOA架构的广泛发展，从此单应用系统逐渐发展成为多应用系统，企业内部的各个系统实现了数据交换和服务集成。REST轻量级服务风格进一步降低了数据传输中的Schema复杂度，而之后的微服务又使得服务进一步解耦和原子化，结合容器编排技术提升了服务的治理能力。任何一种技术和协议都是在不断迭代中进行发展、升级及迭代的。</p>
+<p>在此，我们不妨大胆预测MCP带来的变化：</p>
+<p><img src="/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534815-21.webp" alt="图片"></p>
+<p><strong>MCP OpenAPI化</strong></p>
+<p>MCP将成为软件对外开放和集成的新协议，SaaS、应用服务将会以MCP方式提供对外服务，MCP将成为与OpenAPI类似的对外服务协议。</p>
+<p><strong>应用交互重构</strong></p>
+<p>重构应用形态，智能助手将以“搜索框”的形式成为各个应用的交互入口，支持语音及自然语言交换形式，完成复杂任务的执行。</p>
+<p><strong>业务E2E自动化</strong></p>
+<p>端到端理解用户意图、执行任务、容错处理将大大简化用户业务流程，一句话自动完成下单、售后、流程审批等操作将变得更为常见。</p>
+<p><strong>生态开放协作</strong></p>
+<p>支付、生活服务、内容服务等服务作为基础能力，实现你中有我、我中有你，从而更大限度拓展服务生态的协作开放。例如，一个个人助手可以完成调用获取好友列表、差旅申请、支付流程等操作，实现在一个应用中通过集成多个服务的MCP Server来完成复杂业务，前提是MCP授权及安全有保证，且MCP具有广泛的应用场景。</p>
+<h2 id="5-2-技术限制"><a href="#5-2-技术限制" class="headerlink" title="5.2 技术限制"></a>5.2 技术限制</h2><p>当然，MCP还处于发展初期，不可避免存在很多问题及缺陷，具体表现在：</p>
+<p><strong>应用范围受限</strong></p>
+<p>MCP Server大部分以本地库方式执行，很大比例的MCP Server依赖于浏览器等外部工具，通常是以Desktop App + MCP方式执行，更适合个人Assistant。企业应用一般在云端执行，这在一定程度限制了MCP的应用。</p>
+<p><strong>行业标准支持</strong></p>
+<p>当前在数据连接和交互领域有众多标准在竞争，MCP协议只是其中之一，要想成为行业通用标准面临很大挑战。目前MCP主要依托Anthropic的Claude生态，缺少核心厂商的支持，但也看到像OpenAI，以及阿里、腾讯也在积极拥抱MCP。</p>
+<p><strong>对协议本质的质疑</strong></p>
+<p>MCP本质上更像是 FunctionCall与Proxy 的组合，在这个角度上来看，MCP只是对于Agent执行外部工具和访问外部资源做了规范，并未在更大范围内实现标准化。许多人质疑其是否能够称之为一个真正的协议。</p>
+<p><strong>安全风险</strong></p>
+<p>MCP Server本地部署，被Host使用后将直接获得Host OS的访问权限，不安全的MCP Server将可能成为漏洞跳板。此外，不可信的MCP Server通过各种<a target="_blank" rel="noopener" href="https://km.woa.com/articles/show/625688">攻击手段</a>也带来了诸多安全挑战。</p>
+<p><img src="/2025/08/14/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3mcp%E5%8D%8F%E8%AE%AE/640-1755156534815-22.webp" alt="图片"></p>
+<p>例如：开发一个 MCP Sever 用来实现加法操作，同时在其中放入恶意的 Prompt，要求 LLM 读取用户当前的工作路径。那么在其执行时就会读取用户工作目录和文件。</p>
+<p>参考文章：</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiao987334176/p/18845151">https://www.cnblogs.com/xiao987334176/p/18845151</a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/BPfVDSaCNFqe39NmtMHc3g">https://mp.weixin.qq.com/s/BPfVDSaCNFqe39NmtMHc3g</a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/jTx_ktWeu5Ck8RDZ3b6iRw?click_id=20">https://mp.weixin.qq.com/s/jTx_ktWeu5Ck8RDZ3b6iRw?click_id=20</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/golang/" rel="tag"># golang</a>
+              <a href="/tags/mcp/" rel="tag"># mcp</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/08/07/golang-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8-MCP-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E4%B8%8A%E4%B8%8B%E6%96%87%E5%8D%8F%E8%AE%AE/" rel="prev" title="golang 快速入门 MCP(大模型上下文协议)">
+      <i class="fa fa-chevron-left"></i> golang 快速入门 MCP(大模型上下文协议)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/08/16/RAG%E5%AE%9E%E6%88%98%EF%BC%9A%E7%94%A8LangChain%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%9F%A5%E8%AF%86%E5%BA%93/" rel="next" title="RAG实战：用LangChain快速搭建个人知识库">
+      RAG实战：用LangChain快速搭建个人知识库 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-MCP%E6%8A%80%E6%9C%AF"><span class="nav-number">1.</span> <span class="nav-text">1. MCP技术</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-MCP%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 MCP是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-MCP"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 为什么需要 MCP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-MPC%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 MPC核心组件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-1-MCP-Server"><span class="nav-number">1.3.1.</span> <span class="nav-text">1.3.1 MCP Server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-2-MCP-Client"><span class="nav-number">1.3.2.</span> <span class="nav-text">1.3.2 MCP Client</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-3-MCP-Host"><span class="nav-number">1.3.3.</span> <span class="nav-text">1.3.3 MCP Host</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 通信协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-1-Standard-Input-Output-stdio"><span class="nav-number">1.4.1.</span> <span class="nav-text">1.4.1 Standard Input&#x2F;Output (stdio)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-2-Server-Sent-Events-SSE"><span class="nav-number">1.4.2.</span> <span class="nav-text">1.4.2 Server-Sent Events (SSE)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-3-Streamable-HTTP"><span class="nav-number">1.4.3.</span> <span class="nav-text">1.4.3 Streamable HTTP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP-SSE-%E7%9A%84%E7%BC%BA%E9%99%B7"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">HTTP + SSE 的缺陷</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8D%E6%94%AF%E6%8C%81%E6%81%A2%E5%A4%8D%E8%BF%9E%E6%8E%A5"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">不支持恢复连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A6%81%E6%B1%82%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BF%9D%E6%8C%81%E9%AB%98%E5%8F%AF%E7%94%A8%E7%9A%84%E9%95%BF%E8%BF%9E%E6%8E%A5"><span class="nav-number">1.4.3.3.</span> <span class="nav-text">要求服务器保持高可用的长连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8F%AA%E8%83%BD%E9%80%9A%E8%BF%87-SSE-%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF"><span class="nav-number">1.4.3.4.</span> <span class="nav-text">服务器只能通过 SSE 发送消息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Streamable-HTTP"><span class="nav-number">1.4.3.5.</span> <span class="nav-text">Streamable HTTP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Streamable-HTTP-%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="nav-number">1.4.3.6.</span> <span class="nav-text">Streamable HTTP 的优势</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%8E-HTTP-SSE-%E5%88%B0-Streamable-HTTP-%E7%9A%84%E5%8F%98%E5%8C%96"><span class="nav-number">1.4.3.7.</span> <span class="nav-text">从 HTTP+SSE 到 Streamable HTTP 的变化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E7%94%A8-WebSocket%EF%BC%9F"><span class="nav-number">1.4.3.8.</span> <span class="nav-text">为什么不用 WebSocket？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MCP-Server-%E7%A4%BA%E4%BE%8B"><span class="nav-number">1.4.3.9.</span> <span class="nav-text">MCP Server 示例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%A0%E7%8A%B6%E6%80%81%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%88Stateless-Server%EF%BC%89"><span class="nav-number">1.4.3.10.</span> <span class="nav-text">无状态服务器（Stateless Server）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%AF%E6%8C%81%E6%B5%81%E5%BC%8F%E8%BE%93%E5%87%BA%E7%9A%84%E6%97%A0%E7%8A%B6%E6%80%81%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%88Stateless-Server-with-Streaming%EF%BC%89"><span class="nav-number">1.4.3.11.</span> <span class="nav-text">支持流式输出的无状态服务器（Stateless Server with Streaming）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%89%E7%8A%B6%E6%80%81%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%88Stateful-Server%EF%BC%89"><span class="nav-number">1.4.3.12.</span> <span class="nav-text">有状态服务器（Stateful Server）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">1.4.3.13.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-4-%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93"><span class="nav-number">1.4.4.</span> <span class="nav-text">1.4.4 模式总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-MCP%E5%8D%8F%E8%AE%AE%E5%B8%A6%E6%9D%A5%E7%9A%84%E6%94%B9%E5%8F%98"><span class="nav-number">1.5.</span> <span class="nav-text">1.5 MCP协议带来的改变</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-MCP-%E7%9A%84%E5%8F%91%E5%B1%95%E6%83%85%E5%86%B5"><span class="nav-number">1.6.</span> <span class="nav-text">1.6 MCP 的发展情况</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-MCP%E6%89%A7%E8%A1%8C%E7%BB%86%E8%8A%82"><span class="nav-number">2.</span> <span class="nav-text">2. MCP执行细节</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-Host%E8%B0%83%E7%94%A8LLM"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 Host调用LLM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-Client%E8%B0%83%E7%94%A8MCP-Server"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 Client调用MCP Server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E8%BF%94%E5%9B%9E%E6%9C%80%E7%BB%88%E5%A4%84%E7%90%86%E7%BB%93%E6%9E%9C"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 返回最终处理结果</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Agent-Function-Calling%E4%B8%8EMCP"><span class="nav-number">3.</span> <span class="nav-text">3. Agent, Function Calling与MCP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-Agent"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 Agent</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-Function-Calling"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 Function Calling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-MCP"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 MCP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E5%AF%B9%E6%AF%94"><span class="nav-number">3.4.</span> <span class="nav-text">3.4 对比</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-MCP%E6%8A%80%E6%9C%AF%E7%94%9F%E6%80%81"><span class="nav-number">4.</span> <span class="nav-text">4. MCP技术生态</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-MCP-Server-Marketplace"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 MCP Server Marketplace</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-MCP%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 MCP应用程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-MCP-Server"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 MCP Server</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E5%AF%B9MCP%E5%8F%91%E5%B1%95%E7%9A%84%E6%80%9D%E8%80%83"><span class="nav-number">5.</span> <span class="nav-text">5. 对MCP发展的思考</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-MCP%E5%B8%A6%E6%9D%A5%E7%9A%84%E5%8F%98%E5%8C%96"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 MCP带来的变化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-%E6%8A%80%E6%9C%AF%E9%99%90%E5%88%B6"><span class="nav-number">5.2.</span> <span class="nav-text">5.2 技术限制</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">penggewu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">penggewu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'default',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+</body>
+</html>

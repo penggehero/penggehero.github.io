@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"penggehero.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9256612801953386"
+     crossorigin="anonymous"></script>
+
+  <meta name="description" content="【Python编程：从入门到实践】-项目-读书笔记 根据 遗忘曲线：如果没有记录和回顾，6天后便会忘记75%的内容   读书笔记正是帮助你记录和回顾的工具，不必拘泥于形式，其核心是：记录、翻看、思考     书名 Python编程：从入门到实践（第3版）    原版书名 Python Crash Course, 3rd Edition   作者 [美] 埃里克·马瑟斯 (Eric Matthes)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Python编程：从入门到实践】-项目-读书笔记">
+<meta property="og:url" content="https://penggehero.github.io/2025/08/21/%E3%80%90Python%E7%BC%96%E7%A8%8B%EF%BC%9A%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E8%B7%B5%E3%80%91-%E9%A1%B9%E7%9B%AE-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="云泽的博客">
+<meta property="og:description" content="【Python编程：从入门到实践】-项目-读书笔记 根据 遗忘曲线：如果没有记录和回顾，6天后便会忘记75%的内容   读书笔记正是帮助你记录和回顾的工具，不必拘泥于形式，其核心是：记录、翻看、思考     书名 Python编程：从入门到实践（第3版）    原版书名 Python Crash Course, 3rd Edition   作者 [美] 埃里克·马瑟斯 (Eric Matthes)">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-08-21T01:49:13.000Z">
+<meta property="article:modified_time" content="2025-08-21T01:52:26.349Z">
+<meta property="article:author" content="penggewu">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="note">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://penggehero.github.io/2025/08/21/%E3%80%90Python%E7%BC%96%E7%A8%8B%EF%BC%9A%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E8%B7%B5%E3%80%91-%E9%A1%B9%E7%9B%AE-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>【Python编程：从入门到实践】-项目-读书笔记 | 云泽的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">云泽的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://penggehero.github.io/2025/08/21/%E3%80%90Python%E7%BC%96%E7%A8%8B%EF%BC%9A%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E8%B7%B5%E3%80%91-%E9%A1%B9%E7%9B%AE-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="penggewu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="云泽的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【Python编程：从入门到实践】-项目-读书笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-08-21 09:49:13 / 修改时间：09:52:26" itemprop="dateCreated datePublished" datetime="2025-08-21T09:49:13+08:00">2025-08-21</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="【Python编程：从入门到实践】-项目-读书笔记"><a href="#【Python编程：从入门到实践】-项目-读书笔记" class="headerlink" title="【Python编程：从入门到实践】-项目-读书笔记"></a>【Python编程：从入门到实践】-项目-读书笔记</h1><blockquote>
+<p>根据 <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E9%81%97%E5%BF%98%E6%9B%B2%E7%BA%BF/7278665?fr=aladdin">遗忘曲线</a>：如果没有记录和回顾，6天后便会忘记75%的内容</p>
+<p>  读书笔记正是帮助你记录和回顾的工具，不必拘泥于形式，其核心是：记录、翻看、思考</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th><strong>书名</strong></th>
+<th>Python编程：从入门到实践（第3版）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>原版书名</strong></td>
+<td>Python Crash Course, 3rd Edition</td>
+</tr>
+<tr>
+<td><strong>作者</strong></td>
+<td><font style="color:rgb(26, 28, 30);background-color:rgb(252, 252, 252);">[美] 埃里克·马瑟斯 (Eric Matthes)</font></td>
+</tr>
+<tr>
+<td><strong>译者</strong></td>
+<td>袁国忠</td>
+</tr>
+<tr>
+<td><strong>状态</strong></td>
+<td><font style="background:#DBF1B7;color:#2A4200">已读完</font></td>
+</tr>
+<tr>
+<td><strong>简介</strong></td>
+<td><strong>Python入门经典，用三大项目实战，带你从零快速上手。</strong></td>
+</tr>
+</tbody></table>
+<h2 id="项目一：外星人入侵-详细学习笔记"><a href="#项目一：外星人入侵-详细学习笔记" class="headerlink" title="项目一：外星人入侵 - 详细学习笔记"></a>项目一：外星人入侵 - 详细学习笔记</h2><hr>
+<h3 id="项目整体介绍"><a href="#项目整体介绍" class="headerlink" title="项目整体介绍"></a><strong>项目整体介绍</strong></h3><p><strong>项目目标：</strong><br>“外星人入侵”是一个经典的2D街机射击游戏。我们的最终目标是创建一个功能完整的游戏，在这个游戏中，玩家可以控制一艘飞船，射击不断向下入侵的外星人舰队，同时游戏会记录得分、最高分、玩家等级和剩余生命。</p>
+<p><strong>核心技术：</strong><br>我们将使用 <strong>Pygame</strong> 这个强大的Python第三方库。Pygame提供了一整套专门用于游戏开发的功能，包括创建窗口、绘制图形、处理用户输入（键盘、鼠标）、播放声音等。它让我们能专注于游戏的<strong>逻辑</strong>，而不用去处理底层的图形绘制细节。</p>
+<p><strong>项目结构与学习路径：</strong><br>这是一个结构化的项目，通过将不同的功能封装在不同的**类（Class）<strong>和</strong>模块（Module，即.py文件）**中来构建。这种方式是现代软件开发的标准实践，能让代码更清晰、更易于管理和扩展。我们将分三章完成：</p>
+<ul>
+<li><strong>第12章：武装飞船</strong> - 搭建游戏框架，创建玩家可控的飞船，并实现射击功能。</li>
+<li><strong>第13章：外星人</strong> - 创建外星人，组成舰队，让它们移动，并实现碰撞检测。</li>
+<li><strong>第14章：记分</strong> - 添加Play按钮，建立完整的记分系统，并让游戏难度递增。</li>
+</ul>
+<hr>
+<h3 id="第12章：武装飞船"><a href="#第12章：武装飞船" class="headerlink" title="第12章：武装飞船"></a><strong>第12章：武装飞船</strong></h3><p><strong>本章核心目标：</strong> 搭建游戏的基础框架，让一个可由玩家控制的飞船出现在屏幕上，并能发射子弹。</p>
+<h4 id="1-搭建游戏框架"><a href="#1-搭建游戏框架" class="headerlink" title="1. 搭建游戏框架"></a><strong>1. 搭建游戏框架</strong></h4><p>首先，我们需要创建一个窗口来作为游戏的舞台。</p>
+<ul>
+<li>**创建主文件 **<code>alien_invasion.py</code>：这是游戏的启动文件和总控制器。</li>
+<li><strong>创建</strong><code>AlienInvasion</code><strong>类</strong>：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># alien_invasion.py</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> pygame</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AlienInvasion</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;管理游戏资源和行为的类&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;初始化游戏并创建游戏资源&quot;&quot;&quot;</span></span><br><span class="line">        pygame.init() <span class="comment"># 1. 初始化Pygame</span></span><br><span class="line"></span><br><span class="line">        <span class="variable language_">self</span>.screen = pygame.display.set_mode((<span class="number">1200</span>, <span class="number">800</span>)) <span class="comment"># 2. 创建窗口</span></span><br><span class="line">        pygame.display.set_caption(<span class="string">&quot;Alien Invasion&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">run_game</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;开始游戏的主循环&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>: <span class="comment"># 3. 游戏主循环</span></span><br><span class="line">            <span class="comment"># 侦听键盘和鼠标事件</span></span><br><span class="line">            <span class="keyword">for</span> event <span class="keyword">in</span> pygame.event.get():</span><br><span class="line">                <span class="keyword">if</span> event.<span class="built_in">type</span> == pygame.QUIT:</span><br><span class="line">                    sys.exit()</span><br><span class="line"></span><br><span class="line">            pygame.display.flip() <span class="comment"># 4. 刷新屏幕</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    ai = AlienInvasion()</span><br><span class="line">    ai.run_game()</span><br></pre></td></tr></table></figure>
+
+<p><strong>细节解析：</strong></p>
+<pre><code>1. `pygame.init()`：初始化所有Pygame模块，是每个Pygame程序的必需步骤。
+2. `pygame.display.set_mode()`：创建一个窗口。它返回一个`surface`对象，这是屏幕上可以绘制图形的区域。
+3. `while True:`：游戏主循环，让游戏持续运行，不断检测输入和更新画面。
+4. `pygame.display.flip()`：刷新屏幕。在每次循环中，都会重新绘制屏幕，`flip`将最新的画面显示出来。
+</code></pre>
+<h4 id="2-将设置模块化-Settings类"><a href="#2-将设置模块化-Settings类" class="headerlink" title="2. 将设置模块化 (Settings类)"></a><strong>2. 将设置模块化 (</strong><code>Settings</code><strong>类)</strong></h4><p>为了不让代码变得混乱，我们把所有设置（如屏幕尺寸、颜色）集中管理。</p>
+<ul>
+<li><strong>创建</strong><code>settings.py</code><strong>文件</strong>：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># settings.py</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Settings</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;存储游戏中所有设置的类&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;初始化游戏的设置&quot;&quot;&quot;</span></span><br><span class="line">        <span class="variable language_">self</span>.screen_width = <span class="number">1200</span></span><br><span class="line">        <span class="variable language_">self</span>.screen_height = <span class="number">800</span></span><br><span class="line">        <span class="variable language_">self</span>.bg_color = (<span class="number">230</span>, <span class="number">230</span>, <span class="number">230</span>) <span class="comment"># RGB颜色：浅灰色</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>在主程序中使用</strong>：在<code>alien_invasion.py</code>中导入<code>Settings</code>类，并创建一个实例 <code>self.settings</code>。</li>
+</ul>
+<h4 id="3-创建飞船-Ship类"><a href="#3-创建飞船-Ship类" class="headerlink" title="3. 创建飞船 (Ship类)"></a><strong>3. 创建飞船 (</strong><code>Ship</code><strong>类)</strong></h4><p>我们创建一个单独的类来处理所有与飞船相关的逻辑。</p>
+<ul>
+<li><strong>创建</strong><code>ship.py</code><strong>文件</strong>：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ship.py</span></span><br><span class="line"><span class="keyword">import</span> pygame</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Ship</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, ai_game</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;初始化飞船并设置其初始位置&quot;&quot;&quot;</span></span><br><span class="line">        <span class="variable language_">self</span>.screen = ai_game.screen</span><br><span class="line">        <span class="variable language_">self</span>.screen_rect = ai_game.screen.get_rect() <span class="comment"># 1. 获取屏幕的rect</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 加载飞船图像并获取其外接矩形</span></span><br><span class="line">        <span class="variable language_">self</span>.image = pygame.image.load(<span class="string">&#x27;images/ship.bmp&#x27;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.rect = <span class="variable language_">self</span>.image.get_rect() <span class="comment"># 2. 获取飞船的rect</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 每艘新飞船都放在屏幕底部的中央</span></span><br><span class="line">        <span class="variable language_">self</span>.rect.midbottom = <span class="variable language_">self</span>.screen_rect.midbottom <span class="comment"># 3. 定位</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">blitme</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;在指定位置绘制飞船&quot;&quot;&quot;</span></span><br><span class="line">        <span class="variable language_">self</span>.screen.blit(<span class="variable language_">self</span>.image, <span class="variable language_">self</span>.rect) <span class="comment"># 4. 绘制</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>细节解析：</strong></p>
+<pre><code>1. `get_rect()`：获取一个`surface`（无论是屏幕还是图像）的**矩形区域（rect）**。
+2. `rect`对象：你可以把它想象成一个围绕图像的隐形框，通过操作它的属性（如`.midbottom`）来轻松定位图像。
+3. `midbottom`：是`rect`的一个属性，代表矩形底边的中心点。将飞船的`midbottom`设置为屏幕的`midbottom`，就能让飞船居中于屏幕底部。
+4. `blit()`：是“绘制”的意思，将一个图像(`self.image`)画在另一个`surface`(`self.screen`)上由`self.rect`指定的位置。
+</code></pre>
+<h4 id="4-实现飞船移动"><a href="#4-实现飞船移动" class="headerlink" title="4. 实现飞船移动"></a><strong>4. 实现飞船移动</strong></h4><ul>
+<li><strong>使用移动标志</strong>：在<code>Ship</code>类的<code>__init__</code>中添加标志 <code>self.moving_right = False</code> 和 <code>self.moving_left = False</code>。</li>
+<li><strong>更新</strong><code>_check_events()</code><strong>方法</strong>：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># alien_invasion.py (在_check_events方法中)</span></span><br><span class="line"><span class="keyword">elif</span> event.<span class="built_in">type</span> == pygame.KEYDOWN: <span class="comment"># 按键按下</span></span><br><span class="line">    <span class="keyword">if</span> event.key == pygame.K_RIGHT:</span><br><span class="line">        <span class="variable language_">self</span>.ship.moving_right = <span class="literal">True</span></span><br><span class="line"><span class="keyword">elif</span> event.<span class="built_in">type</span> == pygame.KEYUP: <span class="comment"># 按键松开</span></span><br><span class="line">    <span class="keyword">if</span> event.key == pygame.K_RIGHT:</span><br><span class="line">        <span class="variable language_">self</span>.ship.moving_right = <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>创建</strong><code>Ship</code><strong>类的</strong><code>update()</code><strong>方法</strong>：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ship.py</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">update</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;根据移动标志调整飞船的位置&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="variable language_">self</span>.moving_right:</span><br><span class="line">        <span class="variable language_">self</span>.rect.x += <span class="number">1</span> <span class="comment"># 暂时移动1个像素</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>在主循环中调用</strong>：在<code>run_game()</code>的<code>while</code>循环里调用<code>self.ship.update()</code>，这样每一帧都会检查标志并移动飞船。</li>
+</ul>
+<h4 id="5-实现射击功能"><a href="#5-实现射击功能" class="headerlink" title="5. 实现射击功能"></a><strong>5. 实现射击功能</strong></h4><ol>
+<li><strong>创建</strong><code>Bullet</code><strong>类 (</strong><code>bullet.py</code><strong>)</strong>：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># bullet.py</span></span><br><span class="line"><span class="keyword">import</span> pygame</span><br><span class="line"><span class="keyword">from</span> pygame.sprite <span class="keyword">import</span> Sprite</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Bullet</span>(<span class="title class_ inherited__">Sprite</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, ai_game</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__() <span class="comment"># 必须调用父类的__init__</span></span><br><span class="line">        <span class="variable language_">self</span>.screen = ai_game.screen</span><br><span class="line">        <span class="variable language_">self</span>.settings = ai_game.settings</span><br><span class="line">        <span class="variable language_">self</span>.color = <span class="variable language_">self</span>.settings.bullet_color</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 在(0, 0)处创建一个表示子弹的矩形，然后设置正确的位置</span></span><br><span class="line">        <span class="variable language_">self</span>.rect = pygame.Rect(<span class="number">0</span>, <span class="number">0</span>, <span class="variable language_">self</span>.settings.bullet_width,</span><br><span class="line">            <span class="variable language_">self</span>.settings.bullet_height)</span><br><span class="line">        <span class="variable language_">self</span>.rect.midtop = ai_game.ship.rect.midtop <span class="comment"># 从飞船顶部发出</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 存储用浮点数表示的子弹位置</span></span><br><span class="line">        <span class="variable language_">self</span>.y = <span class="built_in">float</span>(<span class="variable language_">self</span>.rect.y)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">update</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;向上移动子弹&quot;&quot;&quot;</span></span><br><span class="line">        <span class="variable language_">self</span>.y -= <span class="variable language_">self</span>.settings.bullet_speed <span class="comment"># y坐标减小</span></span><br><span class="line">        <span class="variable language_">self</span>.rect.y = <span class="variable language_">self</span>.y</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">draw_bullet</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;在屏幕上绘制子弹&quot;&quot;&quot;</span></span><br><span class="line">        pygame.draw.rect(<span class="variable language_">self</span>.screen, <span class="variable language_">self</span>.color, <span class="variable language_">self</span>.rect)</span><br></pre></td></tr></table></figure>
+
+<pre><code>- 这个类需要继承`pygame.sprite.Sprite`，这让我们能使用**编组（Group）**来统一管理所有子弹。
+</code></pre>
+<ol start="2">
+<li><strong>管理子弹</strong>：<ul>
+<li>在<code>AlienInvasion</code>中创建一个编组：<code>self.bullets = pygame.sprite.Group()</code>。</li>
+<li>当玩家按下空格键时 (<code>K_SPACE</code>)，创建一个<code>Bullet</code>实例并将其添加到<code>self.bullets</code>编组中。</li>
+<li>在主循环中，调用<code>self.bullets.update()</code>来移动所有子弹。</li>
+<li>在<code>_update_screen()</code>中，遍历<code>self.bullets</code>编组，并对每个子弹调用<code>draw_bullet()</code>方法。</li>
+<li><strong>删除消失的子弹</strong>：遍历<code>self.bullets.copy()</code>，检查子弹是否飞出屏幕顶部(<code>bullet.rect.bottom &lt;= 0</code>)，如果是，则从<code>self.bullets</code>中移除它。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="第13章：外星人"><a href="#第13章：外星人" class="headerlink" title="第13章：外星人"></a><strong>第13章：外星人</strong></h3><p><strong>本章核心目标：</strong> 在屏幕上创建一群外星人，让它们能够作为一个整体移动，并实现子弹与外星人、外星人与飞船的碰撞检测。</p>
+<h4 id="1-创建外星人"><a href="#1-创建外星人" class="headerlink" title="1. 创建外星人"></a><strong>1. 创建外星人</strong></h4><ul>
+<li><strong>创建</strong><code>Alien</code><strong>类 (</strong><code>alien.py</code><strong>)</strong>：这个类的结构与<code>Ship</code>类非常相似，也需要加载图像、获取<code>rect</code>。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># alien.py</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Alien</span>(<span class="title class_ inherited__">Sprite</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, ai_game</span>):</span><br><span class="line">        <span class="comment"># ...</span></span><br><span class="line">        <span class="variable language_">self</span>.image = pygame.image.load(<span class="string">&#x27;images/alien.bmp&#x27;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.rect = <span class="variable language_">self</span>.image.get_rect()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 每个外星人最初都在屏幕左上角附近</span></span><br><span class="line">        <span class="variable language_">self</span>.rect.x = <span class="variable language_">self</span>.rect.width</span><br><span class="line">        <span class="variable language_">self</span>.rect.y = <span class="variable language_">self</span>.rect.height</span><br><span class="line">        <span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-创建外星舰队"><a href="#2-创建外星舰队" class="headerlink" title="2. 创建外星舰队"></a><strong>2. 创建外星舰队</strong></h4><ul>
+<li><strong>创建</strong><code>_create_fleet()</code><strong>方法</strong>：这个方法负责计算并创建整支舰队。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># alien_invasion.py (_create_fleet方法)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">_create_fleet</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;创建外星舰队&quot;&quot;&quot;</span></span><br><span class="line">    alien = Alien(<span class="variable language_">self</span>)</span><br><span class="line">    alien_width, alien_height = alien.rect.size</span><br><span class="line">    <span class="comment"># ... 计算一行可容纳多少外星人，以及可容纳多少行 ...</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> row_number <span class="keyword">in</span> <span class="built_in">range</span>(number_rows):</span><br><span class="line">        <span class="keyword">for</span> alien_number <span class="keyword">in</span> <span class="built_in">range</span>(number_aliens_x):</span><br><span class="line">            <span class="variable language_">self</span>._create_alien(alien_number, row_number)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>使用嵌套循环</strong>：通过两层<code>for</code>循环，我们可以按行和列来创建外星人，并精确计算每个外星人的位置。</li>
+</ul>
+<h4 id="3-让舰队移动"><a href="#3-让舰队移动" class="headerlink" title="3. 让舰队移动"></a><strong>3. 让舰队移动</strong></h4><ol>
+<li><strong>添加设置</strong>：在<code>settings.py</code>中添加<code>alien_speed</code>、<code>fleet_drop_speed</code>和<code>fleet_direction</code>（<code>1</code>表示向右，<code>-1</code>表示向左）。</li>
+<li><code>Alien</code><strong>类的</strong><code>update()</code><strong>方法</strong>：让每个外星人根据<code>fleet_direction</code>来移动。</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># alien.py</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">update</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;向右或向左移动外星人&quot;&quot;&quot;</span></span><br><span class="line">    <span class="variable language_">self</span>.x += (<span class="variable language_">self</span>.settings.alien_speed *</span><br><span class="line">                    <span class="variable language_">self</span>.settings.fleet_direction)</span><br><span class="line">    <span class="variable language_">self</span>.rect.x = <span class="variable language_">self</span>.x</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><strong>边缘检测</strong>：在<code>Alien</code>类中添加<code>check_edges()</code>方法，检查外星人是否碰到屏幕边缘。</li>
+<li><strong>在</strong><code>AlienInvasion</code><strong>中控制舰队移动</strong>：<ul>
+<li>创建<code>_update_aliens()</code>方法，它会调用<code>self.aliens.update()</code>。</li>
+<li>在此方法中，调用<code>_check_fleet_edges()</code>。</li>
+<li><code>_check_fleet_edges()</code>遍历舰队，如果发现有外星人碰到边缘，就调用<code>_change_fleet_direction()</code>。</li>
+<li><code>_change_fleet_direction()</code>会让整个舰队下移，并反转移动方向。</li>
+</ul>
+</li>
+</ol>
+<h4 id="4-碰撞检测与游戏结束"><a href="#4-碰撞检测与游戏结束" class="headerlink" title="4. 碰撞检测与游戏结束"></a><strong>4. 碰撞检测与游戏结束</strong></h4><ol>
+<li><strong>子弹与外星人碰撞</strong>：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># alien_invasion.py (_update_bullets方法)</span></span><br><span class="line">collisions = pygame.sprite.groupcollide(</span><br><span class="line">        <span class="variable language_">self</span>.bullets, <span class="variable language_">self</span>.aliens, <span class="literal">True</span>, <span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<pre><code>- **核心函数**: `pygame.sprite.groupcollide()`
+- 这行代码会检查`bullets`编组和`aliens`编组之间是否有成员碰撞。后两个`True`参数表示**碰撞后立即销毁**子弹和外星人。
+- 当所有外星人被消灭后（即`self.aliens`为空），清空子弹并重新创建舰队。
+</code></pre>
+<ol start="2">
+<li><strong>外星人与飞船碰撞</strong>：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># alien_invasion.py (_update_aliens方法)</span></span><br><span class="line"><span class="keyword">if</span> pygame.sprite.spritecollideany(<span class="variable language_">self</span>.ship, <span class="variable language_">self</span>.aliens):</span><br><span class="line">    <span class="variable language_">self</span>._ship_hit()</span><br></pre></td></tr></table></figure>
+
+<pre><code>- **创建**`GameStats`**类 (**`game_stats.py`**)**：用于跟踪游戏统计数据，如剩余飞船数`ships_left`。
+- **核心函数**: `pygame.sprite.spritecollideany()`
+- `_ship_hit()`**方法**：
+    1. 检查`ships_left`是否大于0。
+    2. 如果大于0，则将`ships_left`减1，清空屏幕，重置飞船和外星人，并暂停0.5秒。
+    3. 如果等于0，则将游戏状态`game_active`设为`False`，游戏结束。
+</code></pre>
+<hr>
+<h3 id="第14章：记分"><a href="#第14章：记分" class="headerlink" title="第14章：记分"></a><strong>第14章：记分</strong></h3><p><strong>本章核心目标：</strong> 完善游戏体验，添加Play按钮、记分系统和难度递增机制。</p>
+<h4 id="14-1-添加Play按钮"><a href="#14-1-添加Play按钮" class="headerlink" title="14.1 添加Play按钮"></a><strong>14.1 添加Play按钮</strong></h4><ol>
+<li><code>Button</code><strong>类 (</strong><code>button.py</code><strong>)</strong>：创建一个自定义的按钮类，因为它不是<code>pygame</code>内置的。<ul>
+<li>它会创建一个矩形，并使用<code>pygame.font</code>模块将文本渲染成图像，然后将文本图像绘制在矩形中央。</li>
+</ul>
+</li>
+<li><strong>管理游戏状态</strong>：<ul>
+<li>在<code>AlienInvasion</code>的<code>__init__</code>中，将<code>game_active</code>标志<strong>初始设为</strong><code>False</code>。</li>
+<li>在<code>_update_screen()</code>中，<strong>仅当</strong><code>game_active</code><strong>为</strong><code>False</code><strong>时</strong>才绘制Play按钮。</li>
+</ul>
+</li>
+<li><strong>响应点击</strong>：<ul>
+<li>在<code>_check_events()</code>中检测<code>MOUSEBUTTONDOWN</code>事件。</li>
+<li>使用<code>button.rect.collidepoint(mouse_pos)</code>判断点击位置是否在按钮内。</li>
+<li>如果点击了按钮且游戏未开始，则<strong>重置游戏</strong>（<code>stats.reset_stats()</code>）、将<code>game_active</code>设为<code>True</code>，并隐藏鼠标光标。</li>
+</ul>
+</li>
+</ol>
+<h4 id="14-2-提高难度"><a href="#14-2-提高难度" class="headerlink" title="14.2 提高难度"></a><strong>14.2 提高难度</strong></h4><ul>
+<li><strong>在</strong><code>Settings</code><strong>中分离设置</strong>：将设置分为<strong>静态设置</strong>和<strong>动态设置</strong>。</li>
+<li><code>increase_speed()</code><strong>方法</strong>：在<code>settings.py</code>中创建一个方法，当调用它时，飞船、子弹和外星人的速度都会乘以一个加速因子（如<code>1.1</code>）。</li>
+<li><strong>调用时机</strong>：当整支外星舰队被消灭后，在创建新舰队之前，调用<code>settings.increase_speed()</code>。</li>
+</ul>
+<h4 id="14-3-记分系统"><a href="#14-3-记分系统" class="headerlink" title="14.3 记分系统"></a><strong>14.3 记分系统</strong></h4><ol>
+<li><code>Scoreboard</code><strong>类 (</strong><code>scoreboard.py</code><strong>)</strong>：创建一个类来处理所有得分信息的显示。</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># scoreboard.py</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Scoreboard</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, ai_game</span>):</span><br><span class="line">        <span class="comment"># ... 初始化字体、颜色等 ...</span></span><br><span class="line">        <span class="variable language_">self</span>.stats = ai_game.stats</span><br><span class="line">        <span class="comment"># ...</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">prep_score</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;将得分渲染为图像&quot;&quot;&quot;</span></span><br><span class="line">        score_str = <span class="built_in">str</span>(<span class="variable language_">self</span>.stats.score)</span><br><span class="line">        <span class="variable language_">self</span>.score_image = <span class="variable language_">self</span>.font.render(score_str, <span class="literal">True</span>,</span><br><span class="line">                <span class="variable language_">self</span>.text_color, <span class="variable language_">self</span>.settings.bg_color)</span><br><span class="line">        <span class="comment"># ... 定位得分图像 ...</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">show_score</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;在屏幕上显示得分&quot;&quot;&quot;</span></span><br><span class="line">        <span class="variable language_">self</span>.screen.blit(<span class="variable language_">self</span>.score_image, <span class="variable language_">self</span>.score_rect)</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><strong>更新和显示</strong>：<ul>
+<li><strong>得分</strong>：当子弹击中外星人时，增加<code>stats.score</code>的值，然后立即调用<code>sb.prep_score()</code>来更新显示的图像。</li>
+<li><strong>最高分</strong>：在<code>GameStats</code>中添加<code>high_score</code>属性。每次得分增加后，都检查是否超过了最高分，如果是则更新<code>high_score</code>和对应的图像。</li>
+<li><strong>等级</strong>：在<code>GameStats</code>中添加<code>level</code>属性。每当消灭一波外星人，就将等级加1并更新图像。</li>
+<li><strong>剩余飞船</strong>：不再用数字显示，而是在屏幕左上角绘制相应数量的小飞船图标。这需要让<code>Ship</code>类也继承<code>Sprite</code>，并在<code>Scoreboard</code>中创建一个飞船编组来管理这些图标。</li>
+</ul>
+</li>
+</ol>
+<p>通过这三章的学习，一个完整、动态且具有挑战性的“外星人入侵”游戏就完成了。这个过程全面覆盖了从项目搭建、面向对象编程、事件处理到游戏逻辑实现的方方面面，是巩固和应用Python基础知识的绝佳实践。</p>
+<h2 id="项目二：数据可视化"><a href="#项目二：数据可视化" class="headerlink" title="项目二：数据可视化"></a>项目二：数据可视化</h2><hr>
+<h3 id="项目整体介绍-1"><a href="#项目整体介绍-1" class="headerlink" title="项目整体介绍"></a><strong>项目整体介绍</strong></h3><p><strong>项目目标：</strong><br>本项目旨在教会我们如何使用Python来处理数据并将其以图形化的方式呈现出来。数据可视化是<strong>数据分析</strong>的核心环节，它能帮助我们直观地发现数据中的模式、趋势和异常点，将枯燥的数字转换成一目了然的图表。</p>
+<p><strong>核心技术：</strong><br>我们将学习使用两个强大的Python数据可视化库：</p>
+<ol>
+<li><strong>Matplotlib</strong>：一个非常流行且功能全面的绘图库，被誉为Python数据可视化领域的“元老”。它能创建高质量的静态图表，如图线图、散点图等。</li>
+<li><strong>Plotly</strong>：一个现代化的交互式绘图库。它生成的图表可以在网页浏览器中显示，用户可以通过鼠标悬停、缩放等方式与图表进行互动，非常适合制作动态和交互式的数据报告。</li>
+</ol>
+<p><strong>项目结构与学习路径：</strong><br>我们将通过三个循序渐进的章节来完成这个项目：</p>
+<ul>
+<li><strong>第15章：生成数据</strong> - 学习Matplotlib和Plotly的基本用法，通过绘制简单的图表和模拟随机游走来生成和可视化数据。</li>
+<li><strong>第16章：下载数据</strong> - 学习如何处理真实世界的数据文件，特别是常见的<strong>CSV格式</strong>。我们将下载并可视化气象数据。</li>
+<li><strong>第17章：使用API</strong> - 学习如何通过**API（应用程序编程接口）**从网络服务（如GitHub）上自动获取实时数据，并进行可视化。</li>
+</ul>
+<hr>
+<h3 id="第15章：生成数据"><a href="#第15章：生成数据" class="headerlink" title="第15章：生成数据"></a><strong>第15章：生成数据</strong></h3><p><strong>本章核心目标：</strong> 掌握Matplotlib和Plotly的基本绘图流程，学会生成简单的数据集并将其可视化。</p>
+<h4 id="1-安装Matplotlib和Plotly"><a href="#1-安装Matplotlib和Plotly" class="headerlink" title="1. 安装Matplotlib和Plotly"></a><strong>1. 安装Matplotlib和Plotly</strong></h4><ul>
+<li><strong>安装命令</strong>：在终端中使用<code>pip</code>来安装这两个库。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python -m pip install --user matplotlib</span><br><span class="line">python -m pip install --user plotly pandas</span><br><span class="line">```    *   **注意**：Plotly Express通常需要`pandas`库的支持，所以我们一并安装。</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-使用Matplotlib绘制简单的折线图"><a href="#2-使用Matplotlib绘制简单的折线图" class="headerlink" title="2. 使用Matplotlib绘制简单的折线图"></a><strong>2. 使用Matplotlib绘制简单的折线图</strong></h4><ol>
+<li><strong>基本绘图流程</strong>：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># mpl_squares.py</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">squares = [<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>]</span><br><span class="line"></span><br><span class="line">fig, ax = plt.subplots() <span class="comment"># 1. 创建图表和绘图区域</span></span><br><span class="line">ax.plot(squares)         <span class="comment"># 2. 绘制数据</span></span><br><span class="line"></span><br><span class="line">plt.show()               <span class="comment"># 3. 显示图表</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>细节解析：</strong></p>
+<pre><code>1. `import matplotlib.pyplot as plt`：这是使用`pyplot`模块的约定俗成的方式。
+2. `plt.subplots()`：创建一个包含图表（`fig`）和单个绘图区域（`ax`）的窗口。`ax`是我们用来绘制图形的主要对象。
+3. `ax.plot()`：根据提供的数据列表绘制折线图。
+4. `plt.show()`：打开Matplotlib的查看器并显示绘制好的图表。
+</code></pre>
+<ol start="2">
+<li><strong>定制图表</strong>：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># mpl_squares.py (修改后)</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">input_values = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line">squares = [<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>]</span><br><span class="line"></span><br><span class="line">plt.style.use(<span class="string">&#x27;seaborn&#x27;</span>) <span class="comment"># 1. 使用预设样式</span></span><br><span class="line">fig, ax = plt.subplots()</span><br><span class="line">ax.plot(input_values, squares, linewidth=<span class="number">3</span>) <span class="comment"># 2. 提供x,y值，设置线宽</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 设置图表标题和坐标轴标签</span></span><br><span class="line">ax.set_title(<span class="string">&quot;Square Numbers&quot;</span>, fontsize=<span class="number">24</span>)</span><br><span class="line">ax.set_xlabel(<span class="string">&quot;Value&quot;</span>, fontsize=<span class="number">14</span>)</span><br><span class="line">ax.set_ylabel(<span class="string">&quot;Square of Value&quot;</span>, fontsize=<span class="number">14</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 设置刻度标记的大小</span></span><br><span class="line">ax.tick_params(labelsize=<span class="number">14</span>)</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><strong>细节解析：</strong></p>
+<pre><code>- 我们可以添加标题、坐标轴标签，并设置线条样式。
+1. `plt.style.use()`：可以使用Matplotlib内置的样式（如`&#39;seaborn&#39;`）来美化图表。
+2. `ax.plot(x, y)`：同时提供x轴和y轴的数据，可以确保图表被正确地绘制。
+3. `ax.set_title()`, `ax.set_xlabel()`, `ax.set_ylabel()`：用于设置图表的各种标签。
+4. `ax.tick_params()`：用于定制坐标轴刻度的外观。
+</code></pre>
+<h4 id="3-使用Matplotlib绘制散点图-scatter"><a href="#3-使用Matplotlib绘制散点图-scatter" class="headerlink" title="3. 使用Matplotlib绘制散点图 (scatter)"></a><strong>3. 使用Matplotlib绘制散点图 (</strong><code>scatter</code><strong>)</strong></h4><ul>
+<li><strong>功能</strong>：用于绘制单个或一系列的数据点。</li>
+<li><strong>自动计算数据</strong>：我们可以用<code>range()</code>和列表推导式来自动生成大量的数据点。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># scatter_squares.py</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">x_values = <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">1001</span>)</span><br><span class="line">y_values = [x**<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> x_values]</span><br><span class="line"></span><br><span class="line">plt.style.use(<span class="string">&#x27;seaborn&#x27;</span>)</span><br><span class="line">fig, ax = plt.subplots()</span><br><span class="line"><span class="comment"># 使用颜色映射 (colormap)</span></span><br><span class="line">ax.scatter(x_values, y_values, c=y_values, cmap=plt.cm.Blues, s=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ... 设置标题和标签 ...</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置每个坐标轴的取值范围</span></span><br><span class="line">ax.axis([<span class="number">0</span>, <span class="number">1100</span>, <span class="number">0</span>, <span class="number">1100000</span>])</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><strong>细节解析：</strong></p>
+<pre><code>- `ax.scatter()`：绘制散点图。
+- `s=10`：设置数据点的大小。
+- `c=y_values, cmap=plt.cm.Blues`：这是一个高级用法，`c`参数用于指定颜色，当它被设置为一个数值列表时，`cmap`（颜色映射）会根据这些数值的大小将点映射成不同的颜色（这里是从浅蓝到深蓝）。
+</code></pre>
+<h4 id="4-模拟随机游走"><a href="#4-模拟随机游走" class="headerlink" title="4. 模拟随机游走"></a><strong>4. 模拟随机游走</strong></h4><ul>
+<li><code>RandomWalk</code>** 类**：创建一个类来模拟随机游走的过程。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># random_walk.py</span></span><br><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> choice</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RandomWalk</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, num_points=<span class="number">5000</span></span>):</span><br><span class="line">        <span class="variable language_">self</span>.num_points = num_points</span><br><span class="line">        <span class="variable language_">self</span>.x_values = [<span class="number">0</span>]</span><br><span class="line">        <span class="variable language_">self</span>.y_values = [<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">fill_walk</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">while</span> <span class="built_in">len</span>(<span class="variable language_">self</span>.x_values) &lt; <span class="variable language_">self</span>.num_points:</span><br><span class="line">            x_direction = choice([<span class="number">1</span>, -<span class="number">1</span>])</span><br><span class="line">            x_distance = choice([<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])</span><br><span class="line">            x_step = x_direction * x_distance</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># ... 对y_step进行类似计算 ...</span></span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 拒绝原地踏步</span></span><br><span class="line">            <span class="keyword">if</span> x_step == <span class="number">0</span> <span class="keyword">and</span> y_step == <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">            <span class="comment"># 计算下一个点的x和y值</span></span><br><span class="line">            x = <span class="variable language_">self</span>.x_values[-<span class="number">1</span>] + x_step</span><br><span class="line">            y = <span class="variable language_">self</span>.y_values[-<span class="number">1</span>] + y_step</span><br><span class="line">            </span><br><span class="line">            <span class="variable language_">self</span>.x_values.append(x)</span><br><span class="line">            <span class="variable language_">self</span>.y_values.append(y)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>可视化随机游走</strong>：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># rw_visual.py</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> random_walk <span class="keyword">import</span> RandomWalk</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>: <span class="comment"># 不断生成新的随机游走图</span></span><br><span class="line">    rw = RandomWalk()</span><br><span class="line">    rw.fill_walk()</span><br><span class="line"></span><br><span class="line">    plt.style.use(<span class="string">&#x27;classic&#x27;</span>)</span><br><span class="line">    fig, ax = plt.subplots()</span><br><span class="line">    point_numbers = <span class="built_in">range</span>(rw.num_points)</span><br><span class="line">    ax.scatter(rw.x_values, rw.y_values, c=point_numbers, cmap=plt.cm.Blues,</span><br><span class="line">        edgecolors=<span class="string">&#x27;none&#x27;</span>, s=<span class="number">15</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 突出起点和终点</span></span><br><span class="line">    ax.scatter(<span class="number">0</span>, <span class="number">0</span>, c=<span class="string">&#x27;green&#x27;</span>, edgecolors=<span class="string">&#x27;none&#x27;</span>, s=<span class="number">100</span>)</span><br><span class="line">    ax.scatter(rw.x_values[-<span class="number">1</span>], rw.y_values[-<span class="number">1</span>], c=<span class="string">&#x27;red&#x27;</span>, edgecolors=<span class="string">&#x27;none&#x27;</span>, s=<span class="number">100</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 隐藏坐标轴</span></span><br><span class="line">    ax.get_xaxis().set_visible(<span class="literal">False</span>)</span><br><span class="line">    ax.get_yaxis().set_visible(<span class="literal">False</span>)</span><br><span class="line">    </span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line">    keep_running = <span class="built_in">input</span>(<span class="string">&quot;Make another walk? (y/n): &quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> keep_running == <span class="string">&#x27;n&#x27;</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="5-使用Plotly模拟掷骰子"><a href="#5-使用Plotly模拟掷骰子" class="headerlink" title="5. 使用Plotly模拟掷骰子"></a><strong>5. 使用Plotly模拟掷骰子</strong></h4><ol>
+<li><code>Die</code>** 类 (<strong><code>die.py</code></strong>)**：创建一个简单的类来模拟骰子。</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># die.py</span></span><br><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> randint</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Die</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, num_sides=<span class="number">6</span></span>):</span><br><span class="line">        <span class="variable language_">self</span>.num_sides = num_sides</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">roll</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> randint(<span class="number">1</span>, <span class="variable language_">self</span>.num_sides)</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><strong>分析结果并可视化</strong>：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># die_visual.py</span></span><br><span class="line"><span class="keyword">from</span> die <span class="keyword">import</span> Die</span><br><span class="line"><span class="keyword">import</span> plotly.express <span class="keyword">as</span> px</span><br><span class="line"></span><br><span class="line">die = Die() <span class="comment"># 创建一个6面骰子</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 掷骰子，并将结果存储在列表中</span></span><br><span class="line">results = [die.roll() <span class="keyword">for</span> roll_num <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1000</span>)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 分析结果</span></span><br><span class="line">poss_results = <span class="built_in">range</span>(<span class="number">1</span>, die.num_sides + <span class="number">1</span>)</span><br><span class="line">frequencies = [results.count(value) <span class="keyword">for</span> value <span class="keyword">in</span> poss_results]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可视化结果</span></span><br><span class="line">title = <span class="string">&quot;Results of Rolling One D6 1,000 Times&quot;</span></span><br><span class="line">labels = &#123;<span class="string">&#x27;x&#x27;</span>: <span class="string">&#x27;Result&#x27;</span>, <span class="string">&#x27;y&#x27;</span>: <span class="string">&#x27;Frequency of Result&#x27;</span>&#125;</span><br><span class="line">fig = px.bar(x=poss_results, y=frequencies, title=title, labels=labels)</span><br><span class="line">fig.show()</span><br></pre></td></tr></table></figure>
+
+<p><strong>细节解析：</strong></p>
+<pre><code>- 掷多次骰子，统计每个点数出现的频率。
+- `import plotly.express as px`：这是使用Plotly Express的约定。
+- `px.bar()`：创建一个**条形图（直方图）**，非常适合显示频率分布。
+- `fig.show()`：在浏览器中打开并显示交互式图表。
+</code></pre>
+<ol start="3">
+<li><strong>定制Plotly图表</strong>：可以为图表添加标题和标签，甚至更进一步地定制布局。</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ... 在fig = px.bar(...)之后添加</span></span><br><span class="line">fig.update_layout(xaxis_dtick=<span class="number">1</span>) <span class="comment"># 确保每个x轴刻度都显示</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="第16章：下载数据"><a href="#第16章：下载数据" class="headerlink" title="第16章：下载数据"></a><strong>第16章：下载数据</strong></h3><p><strong>本章核心目标：</strong> 学习处理存储在文件中的真实世界数据集，重点是<strong>CSV（逗号分隔值）文件</strong>，并使用Matplotlib将其可视化。</p>
+<h4 id="1-CSV文件格式"><a href="#1-CSV文件格式" class="headerlink" title="1. CSV文件格式"></a><strong>1. CSV文件格式</strong></h4><ul>
+<li><strong>概念</strong>：一种非常常见的、用纯文本存储表格数据的文件格式。每行代表一条记录，记录中的字段用逗号分隔。</li>
+</ul>
+<h4 id="2-解析CSV文件头"><a href="#2-解析CSV文件头" class="headerlink" title="2. 解析CSV文件头"></a><strong>2. 解析CSV文件头</strong></h4><ul>
+<li><code>csv</code><strong>模块</strong>：Python标准库中用于处理CSV文件的模块。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sitka_highs.py</span></span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"></span><br><span class="line">path = Path(<span class="string">&#x27;weather_data/sitka_weather_07-2021_simple.csv&#x27;</span>)</span><br><span class="line">lines = path.read_text().splitlines()</span><br><span class="line"></span><br><span class="line">reader = csv.reader(lines) <span class="comment"># 1. 创建reader对象</span></span><br><span class="line">header_row = <span class="built_in">next</span>(reader)  <span class="comment"># 2. 读取文件头</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> index, column_header <span class="keyword">in</span> <span class="built_in">enumerate</span>(header_row):</span><br><span class="line">    <span class="built_in">print</span>(index, column_header)</span><br></pre></td></tr></table></figure>
+
+<p><strong>细节解析：</strong></p>
+<pre><code>1. `csv.reader()`：接收一个文件对象（或行列表），并创建一个`reader`对象，可以方便地遍历CSV的每一行。
+2. `next()`：当用于`reader`对象时，它会返回文件中的下一行。第一次调用时返回的就是文件头。
+</code></pre>
+<h4 id="3-提取并读取数据"><a href="#3-提取并读取数据" class="headerlink" title="3. 提取并读取数据"></a><strong>3. 提取并读取数据</strong></h4><ul>
+<li><strong>遍历数据</strong>：在读取文件头之后，继续对<code>reader</code>对象进行<code>for</code>循环，就可以遍历文件的其余数据行。</li>
+<li><strong>数据转换</strong>：从CSV文件中读取的数据都是<strong>字符串</strong>，如果需要进行计算，必须用<code>int()</code>或<code>float()</code>转换为数字。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sitka_highs.py</span></span><br><span class="line">highs = []</span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> reader:</span><br><span class="line">    high = <span class="built_in">int</span>(row[<span class="number">4</span>]) <span class="comment"># 假设最高温在第5列（索引为4）</span></span><br><span class="line">    highs.append(high)</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-处理日期数据-datetime模块"><a href="#4-处理日期数据-datetime模块" class="headerlink" title="4. 处理日期数据 (datetime模块)"></a><strong>4. 处理日期数据 (</strong><code>datetime</code><strong>模块)</strong></h4><ul>
+<li><strong>功能</strong>：Python标准库中用于处理日期和时间的模块。</li>
+<li><code>datetime.strptime()</code>：将<strong>字符串</strong>格式的日期转换为Python能够理解的<code>datetime</code><strong>对象</strong>。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line"><span class="comment"># 格式代码 &#x27;%Y-%m-%d&#x27; 告诉Python如何解析日期字符串&#x27;2021-07-01&#x27;</span></span><br><span class="line">first_date = datetime.strptime(<span class="string">&#x27;2021-07-01&#x27;</span>, <span class="string">&#x27;%Y-%m-%d&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>在图表中使用日期</strong>：将日期字符串转换为<code>datetime</code>对象后，就可以将它们作为x轴数据传递给<code>plot()</code>，Matplotlib会自动处理日期的显示。<ul>
+<li><code>fig.autofmt_xdate()</code>：自动格式化x轴的日期标签，使其倾斜以避免重叠。</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-错误检查"><a href="#5-错误检查" class="headerlink" title="5. 错误检查"></a><strong>5. 错误检查</strong></h4><ul>
+<li><strong>问题</strong>：真实世界的数据集常常是不完整的，比如某一天的数据缺失。</li>
+<li><strong>解决方法</strong>：使用**<code>try-except-else</code>代码块**。在尝试转换数据（如<code>int()</code>）时，如果遇到空字符串或其他无效值，会引发<code>ValueError</code>。我们可以捕获这个异常，并打印一条错误消息，然后继续处理下一行数据。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> reader:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        high = <span class="built_in">int</span>(row[<span class="number">3</span>])</span><br><span class="line">        low = <span class="built_in">int</span>(row[<span class="number">4</span>])</span><br><span class="line">    <span class="keyword">except</span> ValueError:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Missing data for <span class="subst">&#123;current_date&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        highs.append(high)</span><br><span class="line">        lows.append(low)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="第17章：使用API"><a href="#第17章：使用API" class="headerlink" title="第17章：使用API"></a><strong>第17章：使用API</strong></h3><p><strong>本章核心目标：</strong> 学习如何通过**API（应用程序编程接口）**自动从网络服务获取实时数据，并使用Plotly进行可视化。</p>
+<h4 id="1-什么是API"><a href="#1-什么是API" class="headerlink" title="1. 什么是API"></a><strong>1. 什么是API</strong></h4><ul>
+<li><strong>概念</strong>：API是网站提供给程序用来交互的一套规则和工具。程序可以通过访问特定的URL（称为<strong>API调用</strong>）来请求数据，网站会以易于处理的格式（通常是<strong>JSON</strong>）返回数据。</li>
+</ul>
+<h4 id="2-使用Requests库"><a href="#2-使用Requests库" class="headerlink" title="2. 使用Requests库"></a><strong>2. 使用Requests库</strong></h4><ul>
+<li><code>requests</code>：一个非常流行的第三方库，用于发送HTTP请求（即进行API调用）。</li>
+<li><strong>安装</strong>：<code>python -m pip install --user requests</code></li>
+<li><strong>进行API调用</strong>：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># python_repos.py</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;https://api.github.com/search/repositories?q=language:python+sort:stars&#x27;</span></span><br><span class="line">headers = &#123;<span class="string">&#x27;Accept&#x27;</span>: <span class="string">&#x27;application/vnd.github.v3+json&#x27;</span>&#125; <span class="comment"># 1. 指定API版本</span></span><br><span class="line">r = requests.get(url, headers=headers) <span class="comment"># 2. 发送GET请求</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Status code: <span class="subst">&#123;r.status_code&#125;</span>&quot;</span>) <span class="comment"># 3. 检查状态码</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>细节解析：</strong></p>
+<pre><code>1. `headers`：HTTP标头，可以向API提供额外信息，这里我们指定使用GitHub API的第3版。
+2. `requests.get()`：发送一个GET请求到指定的URL。
+3. `r.status_code`：响应对象`r`的状态码。**状态码200表示请求成功**。
+</code></pre>
+<h4 id="3-处理API响应"><a href="#3-处理API响应" class="headerlink" title="3. 处理API响应"></a><strong>3. 处理API响应</strong></h4><ul>
+<li><strong>JSON格式</strong>：API返回的数据通常是JSON格式。</li>
+<li><strong>解析JSON</strong>：<code>requests</code>库内置了JSON解码器，可以轻松地将响应转换为Python字典。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">response_dict = r.json()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>探索数据</strong>：转换成字典后，我们就可以通过键来访问数据了，就像处理普通字典一样。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Total repositories: <span class="subst">&#123;response_dict[<span class="string">&#x27;total_count&#x27;</span>]&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">repo_dicts = response_dict[<span class="string">&#x27;items&#x27;</span>] <span class="comment"># 获取仓库信息列表</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 遍历列表，处理每个仓库的信息</span></span><br><span class="line"><span class="keyword">for</span> repo_dict <span class="keyword">in</span> repo_dicts:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;\nName: <span class="subst">&#123;repo_dict[<span class="string">&#x27;name&#x27;</span>]&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Owner: <span class="subst">&#123;repo_dict[<span class="string">&#x27;owner&#x27;</span>][<span class="string">&#x27;login&#x27;</span>]&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="4-使用Plotly可视化API返回的数据"><a href="#4-使用Plotly可视化API返回的数据" class="headerlink" title="4. 使用Plotly可视化API返回的数据"></a><strong>4. 使用Plotly可视化API返回的数据</strong></h4><ul>
+<li><strong>流程</strong>：<ol>
+<li>执行API调用并获取数据。</li>
+<li>遍历返回的数据，将需要可视化的信息（如仓库名、星标数、悬停文本等）提取并存储到列表中。</li>
+<li>使用<code>plotly.express</code>（如<code>px.bar()</code>）创建图表，将这些列表作为数据源。</li>
+</ol>
+</li>
+<li><strong>添加交互功能</strong>：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ... 在循环中 ...</span></span><br><span class="line">repo_name = repo_dict[<span class="string">&#x27;name&#x27;</span>]</span><br><span class="line">repo_url = repo_dict[<span class="string">&#x27;html_url&#x27;</span>]</span><br><span class="line">repo_link = <span class="string">f&quot;&lt;a href=&#x27;<span class="subst">&#123;repo_url&#125;</span>&#x27;&gt;<span class="subst">&#123;repo_name&#125;</span>&lt;/a&gt;&quot;</span></span><br><span class="line">repo_links.append(repo_link)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ... 在绘图时 ...</span></span><br><span class="line">fig = px.bar(x=repo_links, y=stars, ...)</span><br></pre></td></tr></table></figure>
+
+<pre><code>- **悬停文本 (Hover Text)**：在`px.bar()`中设置`hover_name`参数，可以在鼠标悬停在条形上时显示更详细的信息。
+- **可点击链接**：可以创建包含HTML `&lt;a&gt;` 标签的字符串列表，并将其作为x轴数据。这样图表中的标签就变成了可点击的链接。
+</code></pre>
+<hr>
+<h4 id="项目总结"><a href="#项目总结" class="headerlink" title="项目总结"></a><strong>项目总结</strong></h4><p>项目二带领我进入了激动人心的数据科学领域。从<strong>第15章</strong>学会使用Matplotlib和Plotly生成基本图表，到<strong>第16章</strong>处理真实的CSV气象数据，再到<strong>第17章</strong>通过API获取实时的网络数据，我逐步掌握了数据可视化的完整流程。我不仅学会了如何画图，更重要的是学会了<strong>如何准备数据、处理数据中的不完美（如缺失值）、以及如何通过定制图表来更清晰地讲述数据背后的故事</strong>。这个项目让我深刻体会到，编程不仅仅是创建应用，更是一种探索和理解世界的强大工具。</p>
+<h2 id="项目三：Web应用程序"><a href="#项目三：Web应用程序" class="headerlink" title="项目三：Web应用程序"></a>项目三：Web应用程序</h2><hr>
+<h3 id="项目整体介绍-2"><a href="#项目整体介绍-2" class="headerlink" title="项目整体介绍"></a><strong>项目整体介绍</strong></h3><p><strong>项目目标：</strong><br>本项目的目标是创建一个名为“学习笔记”（Learning Log）的<strong>Web应用程序</strong>。用户可以通过网页浏览器访问这个应用，注册账户，然后创建自己学习的主题，并为每个主题添加学习笔记条目。这个项目将教会我们构建一个功能完整的、数据驱动的、支持多用户的动态网站。</p>
+<p><strong>核心技术：</strong><br>我们将使用 <strong>Django</strong>，这是一个非常流行且功能强大的Python <strong>Web框架</strong>。框架是一套工具和规则的集合，它极大地简化了Web应用的开发过程。Django为我们处理了很多复杂的底层工作，比如：</p>
+<ul>
+<li><strong>URL路由</strong>：将用户请求的网址映射到正确的处理逻辑。</li>
+<li><strong>数据库交互</strong>：通过**模型（Models）**来定义数据结构，Django会自动将其转换为数据库表，并提供简单的API来操作数据。</li>
+<li><strong>用户认证</strong>：内置了完整的用户注册、登录、注销系统。</li>
+<li><strong>模板系统</strong>：将后端逻辑与前端HTML页面分离，让我们可以动态生成网页内容。</li>
+<li><strong>安全性</strong>：内置了对常见网络攻击（如CSRF）的防护。</li>
+</ul>
+<p><strong>项目结构与学习路径：</strong><br>我们将分三章来逐步构建和完善这个Web应用：</p>
+<ul>
+<li><strong>第18章：Django入门</strong> - 搭建项目基础，包括设置开发环境、创建Django项目和应用、定义数据模型，并使用Django的管理后台添加初始数据。</li>
+<li><strong>第19章：用户账户</strong> - 实现用户功能，包括创建让用户添加和编辑数据的表单，以及构建完整的用户注册、登录和注销系统。</li>
+<li><strong>第20章：设置应用程序的样式并部署</strong> - 使用<strong>Bootstrap</strong>框架美化应用的外观，使其适应不同尺寸的设备（响应式设计），最后将整个项目<strong>部署</strong>到真实的Web服务器上，让任何人都可以通过互联网访问。</li>
+</ul>
+<hr>
+<h3 id="第18章：Django入门"><a href="#第18章：Django入门" class="headerlink" title="第18章：Django入门"></a><strong>第18章：Django入门</strong></h3><p><strong>本章核心目标：</strong> 搭建Django项目的骨架，定义数据结构，并通过Django强大的管理后台初步与项目进行交互。</p>
+<h4 id="18-1-建立项目"><a href="#18-1-建立项目" class="headerlink" title="18.1 建立项目"></a><strong>18.1 建立项目</strong></h4><ol>
+<li><strong>制定规范 (Spec)</strong>：明确项目目标——一个让用户记录学习主题和笔记的在线日志系统。</li>
+<li><strong>建立虚拟环境</strong>：<ul>
+<li><strong>目的</strong>：为项目创建一个隔离的Python环境，避免不同项目间的库版本冲突。这是专业开发的标准做法。</li>
+<li><strong>命令</strong>：</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在项目主文件夹 learning_log 中</span></span><br><span class="line">python -m venv ll_env       <span class="comment"># 创建名为ll_env的虚拟环境</span></span><br><span class="line"><span class="built_in">source</span> ll_env/bin/activate  <span class="comment"># 激活环境 (macOS/Linux)</span></span><br><span class="line"><span class="comment"># ll_env\Scripts\activate   # 激活环境 (Windows)</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><strong>安装Django</strong>：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install django</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><strong>在Django中创建项目</strong>：<ul>
+<li><strong>项目 (Project)</strong>：是整个Web应用的配置和应用的集合。</li>
+<li><strong>应用 (App)</strong>：是项目中负责实现某个特定功能的模块，如博客、调查等。一个项目可以包含多个应用。</li>
+<li><strong>命令</strong>：</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 注意末尾的句点 .</span></span><br><span class="line">django-admin startproject ll_project .</span><br></pre></td></tr></table></figure>
+
+<pre><code>    * 这会创建一个名为 `ll_project` 的配置目录和一个 `manage.py` 工具文件。
+</code></pre>
+<ol start="5">
+<li><strong>创建数据库</strong>：<ul>
+<li>Django默认使用<strong>SQLite</strong>，这是一个轻量级的、基于单个文件的数据库。</li>
+<li><strong>迁移 (Migrate)</strong>：<code>migrate</code>命令会根据项目的模型设置来创建或更新数据库的结构。</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py migrate</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li><strong>查看项目</strong>：<ul>
+<li><strong>开发服务器</strong>：Django内置了一个用于开发的轻量级Web服务器。</li>
+<li><strong>命令</strong>：</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py runserver</span><br></pre></td></tr></table></figure>
+
+<pre><code>- 在浏览器中访问 `http://localhost:8000/`，看到Django的欢迎页面，表示项目已成功创建。
+</code></pre>
+<h4 id="18-2-创建应用程序"><a href="#18-2-创建应用程序" class="headerlink" title="18.2 创建应用程序"></a><strong>18.2 创建应用程序</strong></h4><ol>
+<li><strong>创建</strong><code>learning_logs</code><strong>应用</strong>：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python manage.py startapp learning_logs</span><br><span class="line">```    *   这会创建一个名为 `learning_logs` 的新文件夹，里面包含了应用所需的基本文件结构。</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><strong>定义模型 (Models)</strong>：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># learning_logs/models.py</span></span><br><span class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Topic</span>(models.Model):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;用户学习的主题&quot;&quot;&quot;</span></span><br><span class="line">    text = models.CharField(max_length=<span class="number">200</span>) <span class="comment"># 1. 字符字段</span></span><br><span class="line">    date_added = models.DateTimeField(auto_now_add=<span class="literal">True</span>) <span class="comment"># 2. 日期时间字段</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__str__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;返回模型的字符串表示&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.text</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Entry</span>(models.Model):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;学到的有关某个主题的具体知识&quot;&quot;&quot;</span></span><br><span class="line">    topic = models.ForeignKey(Topic, on_delete=models.CASCADE) <span class="comment"># 3. 外键</span></span><br><span class="line">    text = models.TextField() <span class="comment"># 4. 文本字段</span></span><br><span class="line">    date_added = models.DateTimeField(auto_now_add=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Meta</span>:</span><br><span class="line">        verbose_name_plural = <span class="string">&#x27;entries&#x27;</span> <span class="comment"># 5. 定义复数形式</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__str__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">f&quot;<span class="subst">&#123;self.text[:<span class="number">50</span>]&#125;</span>...&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>细节解析：</strong></p>
+<pre><code>- **文件**：`learning_logs/models.py`
+- **概念**：模型是数据的**唯一、确切的信息来源**。它是一个Python类，定义了数据的字段和行为。Django会根据模型自动创建数据库表。
+1. `CharField`：用于存储较短的文本，如标题。`max_length`是必需参数。
+2. `DateTimeField`：用于存储日期和时间。`auto_now_add=True`表示在创建对象时自动设置为当前时间。
+3. `ForeignKey`：**外键**，用于建立两个模型之间的**多对一**关系。这里表示一个`Entry`关联到一个`Topic`，而一个`Topic`可以有多个`Entry`。`on_delete=models.CASCADE`表示当关联的`Topic`被删除时，所有相关的`Entry`也会被级联删除。
+4. `TextField`：用于存储大量文本，没有长度限制。
+5. `Meta`类：用于存储模型的元数据。`verbose_name_plural`用于指定模型的复数形式，在管理后台中会用到。
+</code></pre>
+<ol start="3">
+<li><strong>激活模型</strong>：<ol>
+<li><strong>在</strong><code>settings.py</code><strong>中注册应用</strong>：将 <code>&#39;learning_logs&#39;,</code> 添加到<code>INSTALLED_APPS</code>列表中。</li>
+<li><strong>为模型创建迁移</strong>：<code>python manage.py makemigrations learning_logs</code>。Django会检测模型的改动，并生成一个迁移文件。</li>
+<li><strong>应用迁移</strong>：<code>python manage.py migrate</code>。将迁移应用到数据库，创建新的数据表。</li>
+</ol>
+</li>
+<li><strong>Django管理网站</strong>：<ul>
+<li><strong>创建超级用户</strong>：<code>python manage.py createsuperuser</code>，然后按提示设置用户名和密码。</li>
+<li><strong>注册模型</strong>：在<code>learning_logs/admin.py</code>中注册你的模型，这样它们才会出现在管理后台中。</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># learning_logs/admin.py</span></span><br><span class="line"><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin</span><br><span class="line"><span class="keyword">from</span> .models <span class="keyword">import</span> Topic, Entry</span><br><span class="line"></span><br><span class="line">admin.site.register(Topic)</span><br><span class="line">admin.site.register(Entry)</span><br></pre></td></tr></table></figure>
+
+<pre><code>- **使用**：运行开发服务器，访问`http://localhost:8000/admin/`，用超级用户登录后，就可以通过图形界面来添加、修改和删除`Topic`和`Entry`了。
+</code></pre>
+<h4 id="18-3-创建网页"><a href="#18-3-创建网页" class="headerlink" title="18.3 创建网页"></a><strong>18.3 创建网页</strong></h4><p>创建网页通常分为三个步骤：定义URL、编写视图、创建模板。</p>
+<ol>
+<li><strong>定义URL模式</strong>：<ul>
+<li><strong>项目URL配置 (</strong><code>ll_project/urls.py</code><strong>)</strong>：这是项目的总路由。我们需要在这里包含应用的URL配置。</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ll_project/urls.py</span></span><br><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path, include</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">&#x27;admin/&#x27;</span>, admin.site.urls),</span><br><span class="line">    path(<span class="string">&#x27;&#x27;</span>, include(<span class="string">&#x27;learning_logs.urls&#x27;</span>)), <span class="comment"># 包含应用的urls</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<pre><code>- **应用URL配置 (**`learning_logs/urls.py`**)**：为应用创建这个新文件，定义该应用内的具体URL。
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># learning_logs/urls.py</span></span><br><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path</span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">app_name = <span class="string">&#x27;learning_logs&#x27;</span> <span class="comment"># 1. 定义命名空间</span></span><br><span class="line">urlpatterns = [</span><br><span class="line">    <span class="comment"># 主页</span></span><br><span class="line">    path(<span class="string">&#x27;&#x27;</span>, views.index, name=<span class="string">&#x27;index&#x27;</span>), <span class="comment"># 2. URL模式</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p><strong>细节解析：</strong></p>
+<pre><code>    1. `app_name`：定义了一个**命名空间**，可以防止不同应用之间URL名称的冲突。
+    2. `path()`：第一个参数是URL模式（空字符串`&#39;&#39;`匹配根URL），第二个参数是处理该URL的**视图函数**，第三个参数是该URL模式的**名称**。
+</code></pre>
+<ol start="2">
+<li><strong>编写视图 (Views)</strong>：<ul>
+<li><strong>文件</strong>：<code>learning_logs/views.py</code></li>
+<li><strong>功能</strong>：视图函数接收HTTP请求，处理业务逻辑，并返回一个HTTP响应（通常是渲染一个HTML页面）。</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># learning_logs/views.py</span></span><br><span class="line"><span class="keyword">from</span> django.shortcuts <span class="keyword">import</span> render</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>(<span class="params">request</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;学习笔记的主页&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> render(request, <span class="string">&#x27;learning_logs/index.html&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<pre><code>    * `render()`函数会结合**数据（可选）****和****模板**来生成一个完整的HTML页面。
+</code></pre>
+<ol start="3">
+<li><strong>创建模板 (Templates)</strong>：<ul>
+<li><strong>文件结构</strong>：在<code>learning_logs</code>应用目录下创建<code>templates/learning_logs/</code>文件夹，并将模板文件放在这里。</li>
+<li><code>base.html</code>** (父模板)**：创建一个基础模板，包含所有页面的公共部分（如页头、导航栏）。</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- base.html --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;&#123;% url &#x27;learning_logs:index&#x27; %&#125;&quot;</span>&gt;</span>Learning Log<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">&#123;% block content %&#125;&#123;% endblock content %&#125;</span><br></pre></td></tr></table></figure>
+
+<pre><code>- `index.html`** (子模板)**：继承父模板，并填充具体内容。
+</code></pre>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- index.html --&gt;</span></span><br><span class="line">&#123;% extends &quot;learning_logs/base.html&quot; %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% block content %&#125;</span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>Learning Log helps you keep track of your learning...<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">&#123;% endblock content %&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>细节解析：</strong></p>
+<pre><code>    * **模板标签 **`&#123;% %&#125;`：用于执行逻辑，如`extends`（继承）、`block`（定义块）。
+    * `&#123;% url 'namespace:name' %&#125;`：这是Django模板中一个极其重要的标签，它会根据URL配置**动态地生成URL**。这比硬编码URL更可靠。
+</code></pre>
+<hr>
+<h3 id="第19章：用户账户"><a href="#第19章：用户账户" class="headerlink" title="第19章：用户账户"></a><strong>第19章：用户账户</strong></h3><p><strong>本章核心目标：</strong> 在项目上添加完整的用户系统，让用户可以注册、登录、注销，并确保用户只能看到和修改自己的数据。</p>
+<h4 id="19-1-让用户能够输入数据"><a href="#19-1-让用户能够输入数据" class="headerlink" title="19.1 让用户能够输入数据"></a><strong>19.1 让用户能够输入数据</strong></h4><ol>
+<li><strong>Django表单 (Forms)</strong><ul>
+<li><code>ModelForm</code>：一种强大的工具，可以根据你定义的模型<strong>自动生成表单</strong>。</li>
+<li><strong>创建</strong><code>forms.py</code><strong>文件</strong>：</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># learning_logs/forms.py</span></span><br><span class="line"><span class="keyword">from</span> django <span class="keyword">import</span> forms</span><br><span class="line"><span class="keyword">from</span> .models <span class="keyword">import</span> Topic</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TopicForm</span>(forms.ModelForm):</span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Meta</span>:</span><br><span class="line">        model = Topic  <span class="comment"># 基于哪个模型</span></span><br><span class="line">        fields = [<span class="string">&#x27;text&#x27;</span>] <span class="comment"># 表单中包含哪些字段</span></span><br><span class="line">        labels = &#123;<span class="string">&#x27;text&#x27;</span>: <span class="string">&#x27;&#x27;</span>&#125; <span class="comment"># 为字段text生成一个空标签</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><strong>创建“添加新主题”的页面</strong>：<ul>
+<li><strong>URL</strong>：在<code>learning_logs/urls.py</code>中添加一个新路径，如<code>path(&#39;new_topic/&#39;, views.new_topic, name=&#39;new_topic&#39;)</code>。</li>
+<li>**视图 **<code>new_topic()</code>：</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># learning_logs/views.py</span></span><br><span class="line"><span class="keyword">from</span> django.shortcuts <span class="keyword">import</span> render, redirect</span><br><span class="line"><span class="keyword">from</span> .forms <span class="keyword">import</span> TopicForm</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">new_topic</span>(<span class="params">request</span>):</span><br><span class="line">    <span class="keyword">if</span> request.method != <span class="string">&#x27;POST&#x27;</span>:</span><br><span class="line">        form = TopicForm() <span class="comment"># GET请求，创建空表单</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        form = TopicForm(data=request.POST) <span class="comment"># POST请求，用用户数据创建表单</span></span><br><span class="line">        <span class="keyword">if</span> form.is_valid(): <span class="comment"># 验证数据</span></span><br><span class="line">            form.save() <span class="comment"># 保存到数据库</span></span><br><span class="line">            <span class="keyword">return</span> redirect(<span class="string">&#x27;learning_logs:topics&#x27;</span>) <span class="comment"># 重定向到主题列表页</span></span><br><span class="line"></span><br><span class="line">    context = &#123;<span class="string">&#x27;form&#x27;</span>: form&#125;</span><br><span class="line">    <span class="keyword">return</span> render(request, <span class="string">&#x27;learning_logs/new_topic.html&#x27;</span>, context)</span><br></pre></td></tr></table></figure>
+
+<pre><code>    * 这个视图需要处理两种请求：**GET**（用户第一次访问页面，显示空表单）和**POST**（用户提交了填写好的表单）。
+    * 通过`request.method`来区分。
+- **模板 **`new_topic.html`：
+</code></pre>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- new_topic.html --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;&#123;% url &#x27;learning_logs:new_topic&#x27; %&#125;&quot;</span> <span class="attr">method</span>=<span class="string">&#x27;post&#x27;</span>&gt;</span></span><br><span class="line">    &#123;% csrf_token %&#125; <span class="comment">&lt;!-- 安全令牌，防止CSRF攻击 --&gt;</span></span><br><span class="line">    &#123;&#123; form.as_p &#125;&#125; <span class="comment">&lt;!-- 将表单渲染为&lt;p&gt;标签 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">name</span>=<span class="string">&quot;submit&quot;</span>&gt;</span>Add topic<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="19-2-创建用户账户"><a href="#19-2-创建用户账户" class="headerlink" title="19.2 创建用户账户"></a><strong>19.2 创建用户账户</strong></h4><ol>
+<li><strong>创建</strong><code>accounts</code><strong>应用</strong>：<code>python manage.py startapp accounts</code>。</li>
+<li><strong>包含</strong><code>accounts</code><strong>的URL</strong>：在项目主<code>urls.py</code>中添加<code>path(&#39;accounts/&#39;, include(&#39;accounts.urls&#39;))</code>。</li>
+<li><strong>使用Django内置的认证URL</strong>：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># accounts/urls.py</span></span><br><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path, include</span><br><span class="line"></span><br><span class="line">app_name = <span class="string">&#x27;accounts&#x27;</span></span><br><span class="line">urlpatterns = [</span><br><span class="line">    <span class="comment"># 包含默认的身份验证URL</span></span><br><span class="line">    path(<span class="string">&#x27;&#x27;</span>, include(<span class="string">&#x27;django.contrib.auth.urls&#x27;</span>)),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<pre><code>- 这会自动为我们提供登录 (`login`)、注销 (`logout`) 等页面的URL和视图。
+</code></pre>
+<ol start="4">
+<li><strong>创建登录模板</strong>：在<code>accounts/templates/registration/login.html</code>中创建模板。Django的认证系统会自动在这个路径下查找模板。</li>
+<li><strong>创建注册页面</strong>：<ul>
+<li><strong>URL</strong>: 在<code>accounts/urls.py</code>中添加<code>path(&#39;register/&#39;, views.register, name=&#39;register&#39;)</code>。</li>
+<li>**视图 **<code>register()</code>:</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># accounts/views.py</span></span><br><span class="line"><span class="keyword">from</span> django.contrib.auth <span class="keyword">import</span> login</span><br><span class="line"><span class="keyword">from</span> django.contrib.auth.forms <span class="keyword">import</span> UserCreationForm</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">register</span>(<span class="params">request</span>):</span><br><span class="line">    <span class="keyword">if</span> request.method != <span class="string">&#x27;POST&#x27;</span>:</span><br><span class="line">        form = UserCreationForm()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        form = UserCreationForm(data=request.POST)</span><br><span class="line">        <span class="keyword">if</span> form.is_valid():</span><br><span class="line">            new_user = form.save()</span><br><span class="line">            login(request, new_user) <span class="comment"># 注册后自动登录</span></span><br><span class="line">            <span class="keyword">return</span> redirect(<span class="string">&#x27;learning_logs:index&#x27;</span>)</span><br><span class="line">    <span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>- **模板 **`register.html`: 结构与`login.html`类似。
+</code></pre>
+<h4 id="19-3-让用户拥有自己的数据"><a href="#19-3-让用户拥有自己的数据" class="headerlink" title="19.3 让用户拥有自己的数据"></a><strong>19.3 让用户拥有自己的数据</strong></h4><ol>
+<li><strong>限制访问 (</strong><code>@login_required</code><strong>)</strong><ul>
+<li><strong>装饰器 (Decorator)</strong>：是一种修改函数行为的简便方法。</li>
+<li>在<code>views.py</code>中，在需要保护的视图函数前加上<code>@login_required</code>，未登录的用户访问时会自动被重定向到登录页面。</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.contrib.auth.decorators <span class="keyword">import</span> login_required</span><br><span class="line"></span><br><span class="line"><span class="meta">@login_required</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">topics</span>(<span class="params">request</span>):</span><br><span class="line">    <span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><strong>将数据关联到用户</strong>：<ul>
+<li><strong>修改</strong><code>Topic</code><strong>模型</strong>：添加一个外键，将其与<code>User</code>模型关联。</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># learning_logs/models.py</span></span><br><span class="line"><span class="keyword">from</span> django.contrib.auth.models <span class="keyword">import</span> User</span><br><span class="line"><span class="comment"># ... in class Topic ...</span></span><br><span class="line">owner = models.ForeignKey(User, on_delete=models.CASCADE)</span><br></pre></td></tr></table></figure>
+
+<pre><code>- **数据迁移**：修改模型后，必须再次运行`makemigrations`和`migrate`。
+</code></pre>
+<ol start="3">
+<li><strong>只显示用户自己的数据</strong>：<ul>
+<li>在视图函数中，使用<code>.filter()</code>来查询只属于当前登录用户的数据。</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># learning_logs/views.py (in topics view)</span></span><br><span class="line">topics = Topic.objects.<span class="built_in">filter</span>(owner=request.user).order_by(<span class="string">&#x27;date_added&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><strong>确保新主题属于当前用户</strong>：<ul>
+<li>在<code>new_topic</code>视图中，保存表单前，将新主题的<code>owner</code>属性设置为当前用户。</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ...</span></span><br><span class="line"><span class="keyword">if</span> form.is_valid():</span><br><span class="line">    new_topic = form.save(commit=<span class="literal">False</span>) <span class="comment"># 先不保存到数据库</span></span><br><span class="line">    new_topic.owner = request.user <span class="comment"># 设置所有者</span></span><br><span class="line">    new_topic.save() <span class="comment"># 再保存</span></span><br><span class="line">    <span class="keyword">return</span> redirect(<span class="string">&#x27;learning_logs:topics&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li><strong>保护页面</strong>：确保用户不能通过手动输入URL的方式访问或编辑<strong>其他用户</strong>的数据。在视图中进行检查：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ... in topic view ...</span></span><br><span class="line"><span class="keyword">if</span> topic.owner != request.user:</span><br><span class="line">    <span class="keyword">raise</span> Http404</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="第20章：设置应用程序的样式并部署"><a href="#第20章：设置应用程序的样式并部署" class="headerlink" title="第20章：设置应用程序的样式并部署"></a><strong>第20章：设置应用程序的样式并部署</strong></h3><p><strong>本章核心目标：</strong> 美化我们的Web应用，并将其发布到互联网上，让全世界的人都能访问。</p>
+<h4 id="20-1-设置样式-Bootstrap"><a href="#20-1-设置样式-Bootstrap" class="headerlink" title="20.1 设置样式 (Bootstrap)"></a><strong>20.1 设置样式 (Bootstrap)</strong></h4><ol>
+<li><strong>Bootstrap简介</strong>：一个流行的前端框架，提供了一套CSS样式和JavaScript组件，可以快速构建出美观且<strong>响应式</strong>（在手机、平板、电脑上都能良好显示）的网页。</li>
+<li><strong>使用</strong><code>django-bootstrap5</code>：<ul>
+<li>安装：<code>pip install django-bootstrap5</code>。</li>
+<li>在<code>settings.py</code>的<code>INSTALLED_APPS</code>中添加<code>&#39;django_bootstrap5&#39;</code>。</li>
+</ul>
+</li>
+<li><strong>修改模板</strong>：<ul>
+<li><code>base.html</code>：<ol>
+<li>在文件顶部加载<code>bootstrap5</code>标签：<code>&#123;% load django_bootstrap5 %&#125;</code>。</li>
+<li>在<code>&lt;head&gt;</code>中加载CSS和JS文件：<code>&#123;% bootstrap_css %&#125;</code> 和 <code>&#123;% bootstrap_javascript %&#125;</code>。</li>
+<li>使用Bootstrap提供的HTML结构和CSS类（如<code>navbar</code>, <code>container</code>, <code>btn</code>）来构建导航栏和页面布局。</li>
+</ol>
+</li>
+<li><strong>其他模板</strong>：使用Bootstrap的CSS类（如<code>card</code>, <code>list-group</code>）来美化表单、列表等元素。</li>
+<li><strong>表单样式</strong>：使用<code>&#123;% bootstrap_form form %&#125;</code>标签可以自动为表单应用Bootstrap样式。</li>
+</ul>
+</li>
+</ol>
+<h4 id="20-2-部署-Platform-sh"><a href="#20-2-部署-Platform-sh" class="headerlink" title="20.2 部署 (Platform.sh)"></a><strong>20.2 部署 (Platform.sh)</strong></h4><p>部署是将我们的本地项目上传到一台24小时运行的<strong>Web服务器</strong>上的过程。</p>
+<ol>
+<li><strong>选择托管平台</strong>：书中选择了Platform.sh，但原理适用于Heroku, AWS等其他平台。</li>
+<li><strong>部署前的准备</strong>：<ul>
+<li><code>requirements.txt</code>：创建一个文件，列出项目的所有Python依赖库。</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip freeze &gt; requirements.txt</span><br></pre></td></tr></table></figure>
+
+<pre><code>- **配置文件**：为部署平台创建特定的配置文件（如`.platform.app.yaml`），告诉平台如何构建和运行我们的Django项目。
+- **修改**`settings.py`：添加线上环境的特定配置，比如允许的主机名、数据库设置，并将`DEBUG`设为`False`（**极其重要，为了安全**）。
+</code></pre>
+<ol start="3">
+<li><strong>使用Git进行版本控制</strong>：<ul>
+<li><code>git</code>：是一个版本控制系统，用于跟踪代码的修改历史。</li>
+<li><strong>基本流程</strong>：<ol>
+<li><code>git init</code>: 初始化一个本地仓库。</li>
+<li>创建<code>.gitignore</code>文件，告诉Git忽略哪些文件（如虚拟环境、数据库文件）。</li>
+<li><code>git add .</code>: 将所有文件添加到暂存区。</li>
+<li><code>git commit -m &quot;Initial commit&quot;</code>: 创建一个提交（快照）。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>部署到Platform.sh</strong><ul>
+<li><strong>安装Platform.sh CLI</strong>：安装平台的命令行工具。</li>
+<li><strong>创建项目</strong>：在Platform.sh上创建一个新项目。</li>
+<li><strong>推送代码</strong>：使用<code>platform push</code>（或<code>git push</code>）将你的本地Git仓库推送到Platform.sh的远程服务器上。</li>
+<li>平台会自动读取配置文件，安装依赖，运行迁移，并启动你的应用。</li>
+</ul>
+</li>
+<li><strong>创建定制错误页面</strong>：创建<code>404.html</code>和<code>500.html</code>模板，当出现页面未找到或服务器内部错误时，向用户显示友好的错误页面，而不是调试信息。</li>
+</ol>
+<hr>
+<h4 id="项目总结-1"><a href="#项目总结-1" class="headerlink" title="项目总结"></a><strong>项目总结</strong></h4><p>项目三是一个完整而深入的实践。通过它，我不仅学会了使用<strong>Django</strong>这个强大的框架来构建Web应用，还掌握了Web开发的整个生命周期：从<strong>规划、建模、开发，到样式设计，最终部署上线</strong>。我理解了<strong>模型-视图-模板（MVT）这一核心设计模式，学会了如何处理用户输入和认证，并意识到了在生产环境中安全配置</strong>（如<code>DEBUG=False</code>）的重要性。将项目部署到真实的服务器上，并获得一个公开的网址，这种成就感是前所未有的。这个项目为我进一步深入Web开发领域打下了坚实的基础。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/note/" rel="tag"># note</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/08/20/%E3%80%90Python%E7%BC%96%E7%A8%8B%EF%BC%9A%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E8%B7%B5%E3%80%91-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="prev" title="【Python编程：从入门到实践】-基础知识-读书笔记">
+      <i class="fa fa-chevron-left"></i> 【Python编程：从入门到实践】-基础知识-读书笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/09/05/agent%E6%80%9D%E7%BB%B4%E6%A8%A1%E5%BC%8F%E4%BB%8B%E7%BB%8D/" rel="next" title="agent思维模式介绍">
+      agent思维模式介绍 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E3%80%90Python%E7%BC%96%E7%A8%8B%EF%BC%9A%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E8%B7%B5%E3%80%91-%E9%A1%B9%E7%9B%AE-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0"><span class="nav-number">1.</span> <span class="nav-text">【Python编程：从入门到实践】-项目-读书笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E4%B8%80%EF%BC%9A%E5%A4%96%E6%98%9F%E4%BA%BA%E5%85%A5%E4%BE%B5-%E8%AF%A6%E7%BB%86%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="nav-number">1.1.</span> <span class="nav-text">项目一：外星人入侵 - 详细学习笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E6%95%B4%E4%BD%93%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.1.1.</span> <span class="nav-text">项目整体介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC12%E7%AB%A0%EF%BC%9A%E6%AD%A6%E8%A3%85%E9%A3%9E%E8%88%B9"><span class="nav-number">1.1.2.</span> <span class="nav-text">第12章：武装飞船</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%90%AD%E5%BB%BA%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">1. 搭建游戏框架</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%B0%86%E8%AE%BE%E7%BD%AE%E6%A8%A1%E5%9D%97%E5%8C%96-Settings%E7%B1%BB"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">2. 将设置模块化 (Settings类)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%88%9B%E5%BB%BA%E9%A3%9E%E8%88%B9-Ship%E7%B1%BB"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">3. 创建飞船 (Ship类)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%AE%9E%E7%8E%B0%E9%A3%9E%E8%88%B9%E7%A7%BB%E5%8A%A8"><span class="nav-number">1.1.2.4.</span> <span class="nav-text">4. 实现飞船移动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E5%AE%9E%E7%8E%B0%E5%B0%84%E5%87%BB%E5%8A%9F%E8%83%BD"><span class="nav-number">1.1.2.5.</span> <span class="nav-text">5. 实现射击功能</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC13%E7%AB%A0%EF%BC%9A%E5%A4%96%E6%98%9F%E4%BA%BA"><span class="nav-number">1.1.3.</span> <span class="nav-text">第13章：外星人</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%88%9B%E5%BB%BA%E5%A4%96%E6%98%9F%E4%BA%BA"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">1. 创建外星人</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%88%9B%E5%BB%BA%E5%A4%96%E6%98%9F%E8%88%B0%E9%98%9F"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">2. 创建外星舰队</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E8%AE%A9%E8%88%B0%E9%98%9F%E7%A7%BB%E5%8A%A8"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">3. 让舰队移动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B%E4%B8%8E%E6%B8%B8%E6%88%8F%E7%BB%93%E6%9D%9F"><span class="nav-number">1.1.3.4.</span> <span class="nav-text">4. 碰撞检测与游戏结束</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC14%E7%AB%A0%EF%BC%9A%E8%AE%B0%E5%88%86"><span class="nav-number">1.1.4.</span> <span class="nav-text">第14章：记分</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#14-1-%E6%B7%BB%E5%8A%A0Play%E6%8C%89%E9%92%AE"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">14.1 添加Play按钮</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-2-%E6%8F%90%E9%AB%98%E9%9A%BE%E5%BA%A6"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">14.2 提高难度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-3-%E8%AE%B0%E5%88%86%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.1.4.3.</span> <span class="nav-text">14.3 记分系统</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E4%BA%8C%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="nav-number">1.2.</span> <span class="nav-text">项目二：数据可视化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E6%95%B4%E4%BD%93%E4%BB%8B%E7%BB%8D-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">项目整体介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC15%E7%AB%A0%EF%BC%9A%E7%94%9F%E6%88%90%E6%95%B0%E6%8D%AE"><span class="nav-number">1.2.2.</span> <span class="nav-text">第15章：生成数据</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85Matplotlib%E5%92%8CPlotly"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">1. 安装Matplotlib和Plotly</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E4%BD%BF%E7%94%A8Matplotlib%E7%BB%98%E5%88%B6%E7%AE%80%E5%8D%95%E7%9A%84%E6%8A%98%E7%BA%BF%E5%9B%BE"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">2. 使用Matplotlib绘制简单的折线图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E4%BD%BF%E7%94%A8Matplotlib%E7%BB%98%E5%88%B6%E6%95%A3%E7%82%B9%E5%9B%BE-scatter"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">3. 使用Matplotlib绘制散点图 (scatter)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E6%A8%A1%E6%8B%9F%E9%9A%8F%E6%9C%BA%E6%B8%B8%E8%B5%B0"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">4. 模拟随机游走</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E4%BD%BF%E7%94%A8Plotly%E6%A8%A1%E6%8B%9F%E6%8E%B7%E9%AA%B0%E5%AD%90"><span class="nav-number">1.2.2.5.</span> <span class="nav-text">5. 使用Plotly模拟掷骰子</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC16%E7%AB%A0%EF%BC%9A%E4%B8%8B%E8%BD%BD%E6%95%B0%E6%8D%AE"><span class="nav-number">1.2.3.</span> <span class="nav-text">第16章：下载数据</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-CSV%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">1. CSV文件格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E8%A7%A3%E6%9E%90CSV%E6%96%87%E4%BB%B6%E5%A4%B4"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">2. 解析CSV文件头</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E6%8F%90%E5%8F%96%E5%B9%B6%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">3. 提取并读取数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%A4%84%E7%90%86%E6%97%A5%E6%9C%9F%E6%95%B0%E6%8D%AE-datetime%E6%A8%A1%E5%9D%97"><span class="nav-number">1.2.3.4.</span> <span class="nav-text">4. 处理日期数据 (datetime模块)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E9%94%99%E8%AF%AF%E6%A3%80%E6%9F%A5"><span class="nav-number">1.2.3.5.</span> <span class="nav-text">5. 错误检查</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC17%E7%AB%A0%EF%BC%9A%E4%BD%BF%E7%94%A8API"><span class="nav-number">1.2.4.</span> <span class="nav-text">第17章：使用API</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AFAPI"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">1. 什么是API</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E4%BD%BF%E7%94%A8Requests%E5%BA%93"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">2. 使用Requests库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%A4%84%E7%90%86API%E5%93%8D%E5%BA%94"><span class="nav-number">1.2.4.3.</span> <span class="nav-text">3. 处理API响应</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E4%BD%BF%E7%94%A8Plotly%E5%8F%AF%E8%A7%86%E5%8C%96API%E8%BF%94%E5%9B%9E%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="nav-number">1.2.4.4.</span> <span class="nav-text">4. 使用Plotly可视化API返回的数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93"><span class="nav-number">1.2.4.5.</span> <span class="nav-text">项目总结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E4%B8%89%EF%BC%9AWeb%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F"><span class="nav-number">1.3.</span> <span class="nav-text">项目三：Web应用程序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E6%95%B4%E4%BD%93%E4%BB%8B%E7%BB%8D-2"><span class="nav-number">1.3.1.</span> <span class="nav-text">项目整体介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC18%E7%AB%A0%EF%BC%9ADjango%E5%85%A5%E9%97%A8"><span class="nav-number">1.3.2.</span> <span class="nav-text">第18章：Django入门</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#18-1-%E5%BB%BA%E7%AB%8B%E9%A1%B9%E7%9B%AE"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">18.1 建立项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#18-2-%E5%88%9B%E5%BB%BA%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">18.2 创建应用程序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#18-3-%E5%88%9B%E5%BB%BA%E7%BD%91%E9%A1%B5"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">18.3 创建网页</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC19%E7%AB%A0%EF%BC%9A%E7%94%A8%E6%88%B7%E8%B4%A6%E6%88%B7"><span class="nav-number">1.3.3.</span> <span class="nav-text">第19章：用户账户</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#19-1-%E8%AE%A9%E7%94%A8%E6%88%B7%E8%83%BD%E5%A4%9F%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">19.1 让用户能够输入数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#19-2-%E5%88%9B%E5%BB%BA%E7%94%A8%E6%88%B7%E8%B4%A6%E6%88%B7"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">19.2 创建用户账户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#19-3-%E8%AE%A9%E7%94%A8%E6%88%B7%E6%8B%A5%E6%9C%89%E8%87%AA%E5%B7%B1%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="nav-number">1.3.3.3.</span> <span class="nav-text">19.3 让用户拥有自己的数据</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC20%E7%AB%A0%EF%BC%9A%E8%AE%BE%E7%BD%AE%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%A0%B7%E5%BC%8F%E5%B9%B6%E9%83%A8%E7%BD%B2"><span class="nav-number">1.3.4.</span> <span class="nav-text">第20章：设置应用程序的样式并部署</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#20-1-%E8%AE%BE%E7%BD%AE%E6%A0%B7%E5%BC%8F-Bootstrap"><span class="nav-number">1.3.4.1.</span> <span class="nav-text">20.1 设置样式 (Bootstrap)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#20-2-%E9%83%A8%E7%BD%B2-Platform-sh"><span class="nav-number">1.3.4.2.</span> <span class="nav-text">20.2 部署 (Platform.sh)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93-1"><span class="nav-number">1.3.4.3.</span> <span class="nav-text">项目总结</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">penggewu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">penggewu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'default',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+</body>
+</html>
